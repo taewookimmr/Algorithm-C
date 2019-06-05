@@ -13,16 +13,72 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="헤더 파일\DQS">
+      <UniqueIdentifier>{d0c11aae-02a5-4ad1-a434-c1e0f7219891}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\BaekJoon">
+      <UniqueIdentifier>{a27d4311-4bfa-4f2a-ac29-4787fd04819f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\GRAPH">
+      <UniqueIdentifier>{1f4c982e-2a49-49c4-9ab7-cd1bf8ef9ec3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\BaekJoon">
+      <UniqueIdentifier>{45965063-6e03-484a-a30b-d5ab515ceb82}</UniqueIdentifier>
+    </Filter>
     <Filter Include="소스 파일\DQS">
-      <UniqueIdentifier>{ce4bba53-c513-4baa-89b8-243d6c3885de}</UniqueIdentifier>
+      <UniqueIdentifier>{81ef5633-ac58-40e3-8130-4600f00e246e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GRAPH">
+      <UniqueIdentifier>{cbc6dfae-12ad-4838-a898-a0b61c3c7b29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\SORT">
+      <UniqueIdentifier>{212dfa68-b075-4a78-84f9-8de1db04cd30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\SORT">
+      <UniqueIdentifier>{aefee9db-7ba9-4723-973c-f3e5a6776439}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\XXXMAIN">
+      <UniqueIdentifier>{9f94eda1-5b41-492c-a0e9-8f373ff876cd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\dqs\dqs2.cpp">
+    <ClInclude Include="include\BaekJoon\BaekJoon.hpp">
+      <Filter>헤더 파일\BaekJoon</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SORT\sort.hpp">
+      <Filter>헤더 파일\SORT</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DQS\DoubleQueueStack.hpp">
+      <Filter>헤더 파일\DQS</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DQS\DoubleQueueStack2.hpp">
+      <Filter>헤더 파일\DQS</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GRAPH\graph.h">
+      <Filter>헤더 파일\GRAPH</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="include\BaekJoon\BaekJoon.cpp">
+      <Filter>소스 파일\BaekJoon</Filter>
+    </ClCompile>
+    <ClCompile Include="include\DQS\DoubleQueueStack.cpp">
       <Filter>소스 파일\DQS</Filter>
     </ClCompile>
-    <ClCompile Include="source\dqs\dqs1.cpp">
+    <ClCompile Include="include\DQS\DoubleQueueStack2.cpp">
       <Filter>소스 파일\DQS</Filter>
+    </ClCompile>
+    <ClCompile Include="include\SORT\sort.cpp">
+      <Filter>소스 파일\SORT</Filter>
+    </ClCompile>
+    <ClCompile Include="include\GRAPH\graph.c">
+      <Filter>소스 파일\GRAPH</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Main_cpp.cpp">
+      <Filter>소스 파일\XXXMAIN</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Main_c.c">
+      <Filter>소스 파일\XXXMAIN</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

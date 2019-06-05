@@ -1,2 +1,10 @@
-﻿  dqs2.cpp
-c:\privatespace\visualstudio2017\algorithm\algorithm\algorithm\source\dqs\dqs2.cpp(161): error C2228: '.init_stack' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
+﻿  BaekJoon.cpp
+  DoubleQueueStack.cpp
+  DoubleQueueStack2.cpp
+  sort.cpp
+  코드를 생성하고 있습니다...
+  graph.c
+c:\programming\ccpp\algoself\algorithm\include\graph\graph.c(58): warning C4013: 'exit'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+  Main_c.c
+  코드를 생성하고 있습니다...
+  algorithm.vcxproj -> C:\Programming\ccpp\algoself\Debug\algorithm.exe
