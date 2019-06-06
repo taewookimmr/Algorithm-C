@@ -28,6 +28,34 @@ void input_adjmatrix(int(*arr)[MAX_VERTEX], int *v, int *e, FILE *fp) {
 
 }
 
+void input_adjlist(node *arr[], int *v, int *e, FILE *fp) {
+
+	char vertex[3];
+	int i, j;
+	node *t;
+	print("\nInput number of Vertex & Edge\n");
+	fscanf(fp, "%d %d", v, e);
+	for (i = 0; i < *v; i++)
+		arr[i] = NULL;
+	for (j = 0; j < *e; j++) {
+		print("\nInput two Vertex consist of Edge-->");
+		fscanf(fp, "%s", vertex);
+
+		i = name2int(vertex[0]);
+		t = (node*)malloc(sizeof(node));
+		t->vertex = name2int(vertex[1]);
+		t->next = arr[i];
+		arr[i] = t;
+
+		//무향 그래프의 대칭성을 표현하기 위해
+		i = name2int(vertex[1]);
+		t = (node*)malloc(sizeof(node));
+		t->vertex = name2int(vertex[0]);
+
+	}
+	
+}
+
 void print_adjmatrix(int(*G)[MAX_VERTEX], int *V) {
 	int size = *V;
 	int i = 0, j = 0;
