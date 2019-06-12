@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\BaekJoon\BaekJoon.hpp" />
+    <ClInclude Include="include\DLL\DoublyLinkedList.h" />
     <ClInclude Include="include\DQS\DoubleQueueStack.hpp" />
     <ClInclude Include="include\DQS\DoubleQueueStack2.hpp" />
     <ClInclude Include="include\GRAPH\graph.h" />
@@ -27,11 +28,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\BaekJoon\BaekJoon.cpp" />
+    <ClCompile Include="include\DLL\DoublyLinkedList.cpp" />
     <ClCompile Include="include\DQS\DoubleQueueStack.cpp" />
     <ClCompile Include="include\DQS\DoubleQueueStack2.cpp" />
     <ClCompile Include="include\GRAPH\graph.c" />
     <ClCompile Include="include\SORT\sort.cpp" />
-    <ClCompile Include="source\Main_c.c" />
+    <ClCompile Include="source\Main_c.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="source\Main_cpp.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>

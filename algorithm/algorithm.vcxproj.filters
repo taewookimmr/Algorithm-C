@@ -40,6 +40,12 @@
     <Filter Include="소스 파일\XXXMAIN">
       <UniqueIdentifier>{9f94eda1-5b41-492c-a0e9-8f373ff876cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\DLL">
+      <UniqueIdentifier>{b40a0679-b5d8-4df9-80c6-a28e314af28b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\DLL">
+      <UniqueIdentifier>{73dc643e-0562-4c5d-89bf-a21b87013130}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\BaekJoon\BaekJoon.hpp">
@@ -56,6 +62,9 @@
     </ClInclude>
     <ClInclude Include="include\GRAPH\graph.h">
       <Filter>헤더 파일\GRAPH</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DLL\DoublyLinkedList.h">
+      <Filter>헤더 파일\DLL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -79,6 +88,9 @@
     </ClCompile>
     <ClCompile Include="source\Main_c.c">
       <Filter>소스 파일\XXXMAIN</Filter>
+    </ClCompile>
+    <ClCompile Include="include\DLL\DoublyLinkedList.cpp">
+      <Filter>소스 파일\DLL</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
