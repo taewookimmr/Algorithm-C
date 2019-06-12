@@ -122,6 +122,22 @@ char int2name(int i) {
 	return i + 'A';
 }
 
+
+void DFS_recur(int(*G)[MAX_VERTEX], int V, int i, int* check) {
+	int j = 0;
+	check[i] = 1; // i번 정점을 방문하므로 표시한다.
+	print("%d-node visited\n", i);
+	for (j = 0; j < V; j++) {
+		if (G[i][j] != 0) {
+			if (check[j] == 0) {
+				DFS_recur(G, V, i, check);
+			}
+		}
+	}
+}
+
+
+
 void Main_graph(int argc, char *argv[], int (*G)[MAX_VERTEX], FILE *fp) {
 	
 	int V, E;
@@ -139,7 +155,6 @@ void Main_graph(int argc, char *argv[], int (*G)[MAX_VERTEX], FILE *fp) {
 
 	return;
 }
-
 
 void Main_graph_list(int argc, char *argv[], node *G[], FILE *fp) {
 
