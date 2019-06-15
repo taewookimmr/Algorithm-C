@@ -17,12 +17,7 @@ void print_adjlist(node *G[], int *V);
 int  name2int(char c);
 char int2name(int i);
 
-/* DFS_recur, 190613 작성
-인접행렬의 포인터 G와 정점의 수 V, 
-그리고 순회를 시작할 정점의 일련 번호를 인자로 받아서 
-i번째 정점에 연결된 연결 요소에 대해 순회한다.
-check 배열도 받도록 수정하였다
-*/
+
 void DFS_recur(int(*G)[MAX_VERTEX], int V, int i, int* check); 
 void DFS_adjmatrix(int(*G)[MAX_VERTEX], int V, int* check);
 void nrDFS_ajdmatrix(int(*G)[MAX_VERTEX], int V, int* check);

@@ -39,9 +39,6 @@
     <ClInclude Include="include\SORT\sort.hpp">
       <Filter>헤더 파일\SORT</Filter>
     </ClInclude>
-    <ClInclude Include="include\DQS\DoubleQueueStack2.hpp">
-      <Filter>헤더 파일\DQS</Filter>
-    </ClInclude>
     <ClInclude Include="include\STACK\Stack.hpp">
       <Filter>헤더 파일\STACK</Filter>
     </ClInclude>
@@ -51,6 +48,9 @@
     <ClInclude Include="include\GRAPH\graph.hpp">
       <Filter>헤더 파일\GRAPH</Filter>
     </ClInclude>
+    <ClInclude Include="include\DQS\DoubleQueueStack.hpp">
+      <Filter>헤더 파일\DQS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Main_cpp.cpp">
@@ -58,9 +58,6 @@
     </ClCompile>
     <ClCompile Include="include\BaekJoon\BaekJoon.cpp">
       <Filter>헤더 파일\BaekJoon</Filter>
-    </ClCompile>
-    <ClCompile Include="include\DQS\DoubleQueueStack2.cpp">
-      <Filter>헤더 파일\DQS</Filter>
     </ClCompile>
     <ClCompile Include="include\SORT\sort.cpp">
       <Filter>헤더 파일\SORT</Filter>
@@ -76,6 +73,9 @@
     </ClCompile>
     <ClCompile Include="source\Main_graph.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="include\DQS\DoubleQueueStack.cpp">
+      <Filter>헤더 파일\DQS</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
