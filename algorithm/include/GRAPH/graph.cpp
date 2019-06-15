@@ -1,13 +1,13 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
-#include <iostream>
-
 #include "graph.hpp"
-#include "../DQS/DoubleQueueStack.hpp"
+#include "../DQS/DoubleQueueStack.hpp" // stack이 필요해서.
 
 
-// 인접배열법을 사용
+/*
+array를 조건에 맞게 채우는 함수
+*/
 void input_adjmatrix(int(*G)[MAX_VERTEX], int *v, int *e, FILE *fp) {
 	char vertex[3];
 	int i, j, k;
@@ -34,6 +34,9 @@ void input_adjmatrix(int(*G)[MAX_VERTEX], int *v, int *e, FILE *fp) {
 
 }
 
+/*
+list를 조건에 맞게 채우는 함수
+*/
 void input_adjlist(node *G[], int *v, int *e, FILE *fp) {
 
 	char vertex[3];
@@ -75,6 +78,9 @@ void input_adjlist(node *G[], int *v, int *e, FILE *fp) {
 	
 }
 
+/*
+array 출력 함수
+*/
 void print_adjmatrix(int(*G)[MAX_VERTEX], int *V) {
 	int size = *V;
 	int i = 0, j = 0;
@@ -86,6 +92,10 @@ void print_adjmatrix(int(*G)[MAX_VERTEX], int *V) {
 	}
 }
 
+
+/*
+list 출력 함수
+*/
 void print_adjlist(node *G[], int *V) {
 	int size = *V;
 	int i = 0, j = 0, k = 0;
@@ -120,14 +130,20 @@ void print_adjlist(node *G[], int *V) {
 	free(condition);
 }
 
+
+/*
+char{A,B,C,D~}를 int{0,1,2,3~}로 변환해주는 함수
+*/
 int name2int(char c) {
 	return c - 'A';
 }
 
+/*
+ int{0,1,2,3~}를 char{A,B,C,D~}로 변환해주는 함수
+*/
 char int2name(int i) {
 	return i + 'A';
 }
-
 
 
 /* DFS_recur, 190613 작성
@@ -153,7 +169,6 @@ void DFS_recur(int(*G)[MAX_VERTEX], int V, int i, int* check) {
 DFS_adjlist 함수는 여러 개의 연결 요소로 구성된 그래프일 경우
 방문되지 않은 연결 요소의 첫 정점을 찾아내어 DFS_recur함수를 호출하는 기능
 */
-
 void DFS_adjmatrix(int(*G)[MAX_VERTEX], int V, int* check) {
 	int i;
 	for (i = 0; i < V; i++) check[i] = 0;
@@ -196,6 +211,24 @@ void nrDFS_ajdmatrix(int(*G)[MAX_VERTEX], int V, int* check) {
 	
 }
 
+
+void DFS_recur_list(node *G[], int V, int i, int* check) {
+
+}
+
+void DFS_adjlist(node *G[], int V, int* check) {
+
+}
+
+void nrDFS_adjlist(node *G[], int V, int* check) {
+
+}
+
+
+
+/*
+array expression test
+*/
 void Main_graph(int argc, char *argv[], int (*G)[MAX_VERTEX], FILE *fp) {
 	
 	int V, E;
@@ -213,12 +246,16 @@ void Main_graph(int argc, char *argv[], int (*G)[MAX_VERTEX], FILE *fp) {
 
 
 	int check[MAX_VERTEX] = {0, };
-	// DFS_adjmatrix(G, V, check);
+	DFS_adjmatrix(G, V, check);
 	nrDFS_ajdmatrix(G, V, check);
 
 	return;
 }
 
+
+/*
+list expression test
+*/
 void Main_graph_list(int argc, char *argv[], node *G[], FILE *fp) {
 
 	int V, E;
@@ -233,6 +270,8 @@ void Main_graph_list(int argc, char *argv[], node *G[], FILE *fp) {
 	input_adjlist(G, &V, &E, fp);
 	printf("\n\nAdjacency Matrix representation for graph\n");
 	print_adjlist(G, &V);
+
+	int check[MAX_VERTEX] = { 0, };
 
 	return;
 }

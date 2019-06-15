@@ -53,9 +53,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\Main_cpp.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="include\BaekJoon\BaekJoon.cpp">
       <Filter>헤더 파일\BaekJoon</Filter>
     </ClCompile>
@@ -76,6 +73,9 @@
     </ClCompile>
     <ClCompile Include="include\DQS\DoubleQueueStack.cpp">
       <Filter>헤더 파일\DQS</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Main.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
