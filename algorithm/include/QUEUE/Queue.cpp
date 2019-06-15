@@ -8,7 +8,7 @@ Queue::Queue() {
 
 Queue::Queue(int MAX) {
 	this->MAX = MAX;
-	queue = new int[MAX];
+	this->queue = new int[MAX];
 }
 
 Queue:: ~Queue() {
@@ -43,6 +43,19 @@ int Queue::get() {
 	return result;
 }
 
+
+int Queue::getSize() {
+	if (front == rear) {
+		return 0; // 비어 있는 큐
+	}
+	if (rear - front > 0) {
+		return rear - front;
+	}
+
+	// rear < front인 경우
+	return rear + MAX - front;
+	
+}
 void Queue::print_queue() {
 	int i = 0;
 	std::cout << "queue contents : front --> rear" << std::endl;

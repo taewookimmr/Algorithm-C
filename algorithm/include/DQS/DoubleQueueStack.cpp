@@ -40,36 +40,68 @@ int DQS::push(int k) {
 }
 
 int DQS::pop() {
-	// 일단 main_queue에 몇개의 요소가 들어있는지 알아야해
 
-	int transfer = 0; // 임시 전달
 
-	while (true) {
-		transfer = main_queue->get();
-		temp_queue->put(transfer);
-
-		if (main_queue->rear == (main_queue->front + 1) % main_queue->MAX) {
-			// 즉 main_queue에 하나의 요소만 남은 경우라면
-			// (그 녀석은 main_queue에 맨 마지막으로 들어온 녀석)
-			// 반복문을 나온다.
-			break;
-		}
+	if (getSize() == 0) {
+		std::cout << "stack underflow" << std::endl;
+		return -1;
 	}
 
+	temp_queue->init_queue();
+
+	int transfer = 0; 
+	int condition = main_queue->rear == (main_queue->front + 1) % main_queue->MAX;
+	while (!condition) {
+		transfer = main_queue->get();
+		temp_queue->put(transfer);
+		condition = main_queue->rear == (main_queue->front + 1) % main_queue->MAX;
+	}
 
 	int result = main_queue->get(); // pop할 요소를 저장한다.
 
-	while (true) {
+	condition = temp_queue->front == temp_queue->rear;
+	while (!condition) {
 		transfer = temp_queue->get();
 		main_queue->put(transfer);
-		if (temp_queue->front == temp_queue->rear) {
-			// temp_queue가 비워졌으면 반복을 중단한다.
-			break;
-		}
+		condition = temp_queue->front == temp_queue->rear;
 	}
 
 	top--;
 	return result;
+}
+
+int DQS::pop_swap_version() {
+
+
+	if (getSize() == 0) {
+		std::cout << "stack underflow" << std::endl;
+		return -1;
+	}
+
+	temp_queue->init_queue();
+
+	int transfer = 0;
+	int condition = main_queue->rear == (main_queue->front + 1) % main_queue->MAX;
+	while (!condition) {
+		transfer = main_queue->get();
+		temp_queue->put(transfer);
+		condition = main_queue->rear == (main_queue->front + 1) % main_queue->MAX;
+	}
+
+	int result = main_queue->get(); // pop할 요소를 저장한다.
+
+	Queue *temp = main_queue;
+	main_queue = temp_queue;
+	temp_queue = temp;
+	temp_queue->init_queue();
+
+	top--;
+	return result;
+}
+
+// 비어있으면 0, 채워져있으면 채워진 요소의 개수를 반환한다.
+int DQS::getSize() {
+	return top+1;
 }
 
 void DQS::print_stack() {
@@ -86,7 +118,13 @@ void Main_DQS() {
 	DQS dqs(10);
 	dqs.init_stack();
 
+
 	dqs.push(1);
+
+	dqs.pop();
+	dqs.pop();
+	dqs.pop();
+
 	dqs.push(2);
 	dqs.push(3);
 	dqs.push(4);
@@ -96,7 +134,7 @@ void Main_DQS() {
 	dqs.push(8);
 	dqs.push(9);
 
-	dqs.pop();
+	
 	dqs.print_stack();
 
 }

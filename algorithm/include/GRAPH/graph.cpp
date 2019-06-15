@@ -1,5 +1,10 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <iostream>
+
 #include "graph.hpp"
- 
+#include "../DQS/DoubleQueueStack.hpp"
 
 
 // 인접배열법을 사용
@@ -138,7 +143,7 @@ void DFS_recur(int(*G)[MAX_VERTEX], int V, int i, int* check) {
 	for (j = 0; j < V; j++) {
 		if (G[i][j] != 0) {
 			if (check[j] == 0) {
-				DFS_recur(G, V, i, check);
+				DFS_recur(G, V, j, check);
 			}
 		}
 	}
@@ -156,6 +161,7 @@ void DFS_adjmatrix(int(*G)[MAX_VERTEX], int V, int* check) {
 		if (check[i] == 0) {
 			DFS_recur(G, V, i, check);
 		}
+		printf("---연결 요소 구분선---\n");
 	}
 }
 
@@ -164,6 +170,29 @@ void DFS_adjmatrix(int(*G)[MAX_VERTEX], int V, int* check) {
 */
 void nrDFS_ajdmatrix(int(*G)[MAX_VERTEX], int V, int* check) {
 	int i, j;
+	
+	DQS stack(MAX_VERTEX);
+	stack.init_stack();
+	for (i = 0; i < V; i++) check[i] = 0;
+	for (i = 0; i < V; i++) {
+		if (check[i] == 0) {
+			stack.push(i);
+			check[i] = 1;
+			while (stack.getSize()) {
+				i = stack.pop();
+				printf("%d-node visited\n", i);
+				for (j = 0; j < V; j++) {
+					if (G[i][j] != 0) {
+						if (check[j] == 0) {
+							stack.push(j);
+							check[j] = 1;
+						}
+					}
+				}
+			}
+		}
+	}
+
 	
 }
 
@@ -181,6 +210,11 @@ void Main_graph(int argc, char *argv[], int (*G)[MAX_VERTEX], FILE *fp) {
 	input_adjmatrix(G, &V, &E, fp);
 	printf("\n\nAdjacency Matrix representation for graph\n");
 	print_adjmatrix(G, &V);
+
+
+	int check[MAX_VERTEX] = {0, };
+	// DFS_adjmatrix(G, V, check);
+	nrDFS_ajdmatrix(G, V, check);
 
 	return;
 }

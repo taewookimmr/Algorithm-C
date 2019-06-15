@@ -15,7 +15,6 @@ public:
 
 	~DQS();
 
-
 	void init_stack();
 
 	void clear_stack();
@@ -23,6 +22,10 @@ public:
 	int push(int k);
 
 	int pop();
+
+	int pop_swap_version();
+
+	int getSize();
 
 	void print_stack();
 

@@ -25,6 +25,8 @@ public:
 
 	int get();
 
+	int getSize();
+
 	void print_queue();
 
 };

@@ -1,7 +1,5 @@
 ﻿  DoubleQueueStack.cpp
   graph.cpp
-e:\shared\programming\ccpp\algoself\algorithm\include\graph\graph.cpp(166): warning C4101: 'j' :참조되지 않은 지역 변수입니다.
-e:\shared\programming\ccpp\algoself\algorithm\include\graph\graph.cpp(166): warning C4101: 'i' :참조되지 않은 지역 변수입니다.
   코드를 생성하고 있습니다...
   Main_graph.cpp
   algorithm.vcxproj -> E:\shared\programming\ccpp\algoself\Debug\algorithm.exe
