@@ -1,8 +1,8 @@
-#include "../include/DQS/DoubleQueueStack2.hpp"
+#include "../include/DQS/DoubleQueueStack.hpp"
 
 int main() {
 
-	Main_DQS2();
+	Main_DQS();
 	return 0;
 
 }

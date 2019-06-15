@@ -124,6 +124,13 @@ char int2name(int i) {
 }
 
 
+
+/* DFS_recur, 190613 작성
+인접행렬의 포인터 G와 정점의 수 V,
+그리고 순회를 시작할 정점의 일련 번호를 인자로 받아서
+i번째 정점에 연결된 연결 요소에 대해 순회한다.
+check 배열도 받도록 수정하였다
+*/
 void DFS_recur(int(*G)[MAX_VERTEX], int V, int i, int* check) {
 	int j = 0;
 	check[i] = 1; // i번 정점을 방문하므로 표시한다.
@@ -137,8 +144,11 @@ void DFS_recur(int(*G)[MAX_VERTEX], int V, int i, int* check) {
 	}
 }
 
-// DFS_adjlist 함수는 여러 개의 연결 요소로 구성된 그래프일 경우
-// 방문되지 않은 연결 요소의 첫 정점을 찾아내어 DFS_recur함수를 호출하는 기능
+/* DFS_adjmatrix
+DFS_adjlist 함수는 여러 개의 연결 요소로 구성된 그래프일 경우
+방문되지 않은 연결 요소의 첫 정점을 찾아내어 DFS_recur함수를 호출하는 기능
+*/
+
 void DFS_adjmatrix(int(*G)[MAX_VERTEX], int V, int* check) {
 	int i;
 	for (i = 0; i < V; i++) check[i] = 0;
@@ -149,7 +159,9 @@ void DFS_adjmatrix(int(*G)[MAX_VERTEX], int V, int* check) {
 	}
 }
 
-// 비재귀판
+/* nrDFS_ajdmatrix
+비재귀판
+*/
 void nrDFS_ajdmatrix(int(*G)[MAX_VERTEX], int V, int* check) {
 	int i, j;
 	

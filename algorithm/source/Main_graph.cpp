@@ -1,4 +1,4 @@
-#include "../include/GRAPH/graph.h"
+#include "../include/GRAPH/graph.hpp"
 
 FILE *fp;
 int G[MAX_VERTEX][MAX_VERTEX];
