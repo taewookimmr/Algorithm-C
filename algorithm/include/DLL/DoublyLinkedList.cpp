@@ -55,7 +55,6 @@ void test() {
 	tester.MemoryLeakChecker();
 }
 
-
 void test2() {
 
 	int numOfInitialNodes = 7;

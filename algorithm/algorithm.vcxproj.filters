@@ -22,29 +22,14 @@
     <Filter Include="헤더 파일\GRAPH">
       <UniqueIdentifier>{1f4c982e-2a49-49c4-9ab7-cd1bf8ef9ec3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\BaekJoon">
-      <UniqueIdentifier>{45965063-6e03-484a-a30b-d5ab515ceb82}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\DQS">
-      <UniqueIdentifier>{81ef5633-ac58-40e3-8130-4600f00e246e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\GRAPH">
-      <UniqueIdentifier>{cbc6dfae-12ad-4838-a898-a0b61c3c7b29}</UniqueIdentifier>
-    </Filter>
     <Filter Include="헤더 파일\SORT">
       <UniqueIdentifier>{212dfa68-b075-4a78-84f9-8de1db04cd30}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\SORT">
-      <UniqueIdentifier>{aefee9db-7ba9-4723-973c-f3e5a6776439}</UniqueIdentifier>
+    <Filter Include="헤더 파일\STACK">
+      <UniqueIdentifier>{195b4fe8-e1b1-4535-be2d-b5dc8f47bff2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\XXXMAIN">
-      <UniqueIdentifier>{9f94eda1-5b41-492c-a0e9-8f373ff876cd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\DLL">
-      <UniqueIdentifier>{b40a0679-b5d8-4df9-80c6-a28e314af28b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="헤더 파일\DLL">
-      <UniqueIdentifier>{73dc643e-0562-4c5d-89bf-a21b87013130}</UniqueIdentifier>
+    <Filter Include="헤더 파일\QUEUE">
+      <UniqueIdentifier>{eb2778bf-4b3c-4194-bd35-9de51e173c07}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -54,43 +39,43 @@
     <ClInclude Include="include\SORT\sort.hpp">
       <Filter>헤더 파일\SORT</Filter>
     </ClInclude>
-    <ClInclude Include="include\DQS\DoubleQueueStack.hpp">
-      <Filter>헤더 파일\DQS</Filter>
-    </ClInclude>
     <ClInclude Include="include\DQS\DoubleQueueStack2.hpp">
       <Filter>헤더 파일\DQS</Filter>
     </ClInclude>
-    <ClInclude Include="include\GRAPH\graph.h">
-      <Filter>헤더 파일\GRAPH</Filter>
+    <ClInclude Include="include\STACK\Stack.hpp">
+      <Filter>헤더 파일\STACK</Filter>
     </ClInclude>
-    <ClInclude Include="include\DLL\DoublyLinkedList.h">
-      <Filter>헤더 파일\DLL</Filter>
+    <ClInclude Include="include\QUEUE\Queue.hpp">
+      <Filter>헤더 파일\QUEUE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GRAPH\graph.hpp">
+      <Filter>헤더 파일\GRAPH</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="include\BaekJoon\BaekJoon.cpp">
-      <Filter>소스 파일\BaekJoon</Filter>
+    <ClCompile Include="source\Main_cpp.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="include\DQS\DoubleQueueStack.cpp">
-      <Filter>소스 파일\DQS</Filter>
+    <ClCompile Include="include\BaekJoon\BaekJoon.cpp">
+      <Filter>헤더 파일\BaekJoon</Filter>
     </ClCompile>
     <ClCompile Include="include\DQS\DoubleQueueStack2.cpp">
-      <Filter>소스 파일\DQS</Filter>
+      <Filter>헤더 파일\DQS</Filter>
     </ClCompile>
     <ClCompile Include="include\SORT\sort.cpp">
-      <Filter>소스 파일\SORT</Filter>
+      <Filter>헤더 파일\SORT</Filter>
     </ClCompile>
-    <ClCompile Include="include\GRAPH\graph.c">
-      <Filter>소스 파일\GRAPH</Filter>
+    <ClCompile Include="include\STACK\Stack.cpp">
+      <Filter>헤더 파일\STACK</Filter>
     </ClCompile>
-    <ClCompile Include="source\Main_cpp.cpp">
-      <Filter>소스 파일\XXXMAIN</Filter>
+    <ClCompile Include="include\QUEUE\Queue.cpp">
+      <Filter>헤더 파일\QUEUE</Filter>
     </ClCompile>
-    <ClCompile Include="source\Main_c.c">
-      <Filter>소스 파일\XXXMAIN</Filter>
+    <ClCompile Include="include\GRAPH\graph.cpp">
+      <Filter>헤더 파일\GRAPH</Filter>
     </ClCompile>
-    <ClCompile Include="include\DLL\DoublyLinkedList.cpp">
-      <Filter>소스 파일\DLL</Filter>
+    <ClCompile Include="source\Main_graph.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

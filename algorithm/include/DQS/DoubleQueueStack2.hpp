@@ -1,64 +1,32 @@
 #pragma once
-#include <iostream>
-
-namespace DoubleQueueStack2 {
+#include "../QUEUE/Queue.hpp"
 
 
-	class Queue {
+class DQS {
 
-	public:
+public:
+	int top;
+	int MAX;
+	Queue *main_queue, *temp_queue;
 
-		int *queue;
+	DQS();
 
-		int MAX;
-		int front;
-		int rear;
+	DQS(int MAX);
 
-		Queue();
-
-		Queue(int MAX);
-
-		virtual ~Queue();
-
-		void init_queue();
-
-		void clear_queue();
-
-		int put(int k);
-
-		int get();
-
-		void print_queue();
-
-	};
-
-	class DQS {
-
-	public:
-		int top;
-		int MAX;
-		Queue *main_queue, *temp_queue;
-
-		DQS();
-
-		DQS(int MAX);
-
-		~DQS();
+	~DQS();
 
 
-		void init_stack();
+	void init_stack();
 
-		void clear_stack();
+	void clear_stack();
 
-		int push(int k);
+	int push(int k);
 
-		int pop();
+	int pop();
 
-		void print_stack();
+	void print_stack();
 
 
-	};
+};
 
-	void Main_DQS2();
-
-}
+void Main_DQS2();
