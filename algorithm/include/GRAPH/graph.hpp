@@ -24,6 +24,10 @@ void DFS_recur_list(node *G[], int V, int i, int* check);
 void DFS_adjlist(node *G[], int V, int* check);
 void nrDFS_adjlist(node *G[], int V, int* check);
 
+void BFS_adjmatrix(int(*G)[MAX_VERTEX], int V, int *check);
+void BFS_adjlist(node *G[], int V, int *check);
+int  num_compo_adjmatix(int(*G)[MAX_VERTEX], int V, int *check);
+
 
 void Main_graph(int argc, char *argv[], int(*G)[MAX_VERTEX], FILE *fp);
 void Main_graph_list(int argc, char *argv[], node *G[], FILE *fp);

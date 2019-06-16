@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "graph.hpp"
+#include "../QUEUE/Queue.hpp" // queue가 필요해서
 #include "../DQS/DoubleQueueStack.hpp" // stack이 필요해서.
 
 
@@ -170,13 +171,13 @@ DFS_adjlist 함수는 여러 개의 연결 요소로 구성된 그래프일 경우
 방문되지 않은 연결 요소의 첫 정점을 찾아내어 DFS_recur함수를 호출하는 기능
 */
 void DFS_adjmatrix(int(*G)[MAX_VERTEX], int V, int* check) {
+	printf("DFS_adjmatrix\n");
 	int i;
 	for (i = 0; i < V; i++) check[i] = 0;
 	for (i = 0; i < V; i++) {
 		if (check[i] == 0) {
 			DFS_recur(G, V, i, check);
 		}
-		printf("---연결 요소 구분선---\n");
 	}
 }
 
@@ -184,6 +185,7 @@ void DFS_adjmatrix(int(*G)[MAX_VERTEX], int V, int* check) {
 비재귀판
 */
 void nrDFS_ajdmatrix(int(*G)[MAX_VERTEX], int V, int* check) {
+	printf("nrDFS_ajdmatrix\n");
 	int i, j;
 	
 	DQS stack(MAX_VERTEX);
@@ -232,6 +234,7 @@ void DFS_recur_list(node *G[], int V, int i, int* check) {
 재귀함수를 내부적으로 사용한다.
 */
 void DFS_adjlist(node *G[], int V, int* check) {
+	printf("DFS_adjlist\n");
 	int i;
 	for (i = 0; i < V; i++) check[i] = 0;
 	for (i = 0; i < V; i++) {
@@ -245,6 +248,7 @@ void DFS_adjlist(node *G[], int V, int* check) {
 인접리스트를 구성하는 모든 연결요소를 순회하는 함수
 */
 void nrDFS_adjlist(node *G[], int V, int* check) {
+	printf("nrDFS_adjlist\n");
 	int i;
 	node *t;
 	DQS stack(MAX_VERTEX);
@@ -269,6 +273,92 @@ void nrDFS_adjlist(node *G[], int V, int* check) {
 	}
 }
 
+/*
+인접 행렬을 사용하여 너비우선탐색을 실시하는 함수
+*/
+void BFS_adjmatrix(int(*G)[MAX_VERTEX], int V, int *check) {
+	printf("BFS_adjmatrix\n");
+	int i, j;
+	Queue queue(MAX_VERTEX);
+	queue.init_queue();
+	for (i = 0; i < V; i++) check[i] = 0;
+	for (i = 0; i < V; i++) {
+		if (check[i] == 0) {
+			queue.put(i);
+			check[i] = 1;
+			while (queue.getSize() != 0) {
+				i = queue.get();
+				printf("%d-node visited\n", i);
+				for (j = 0; j < V; j++) {
+					if (G[i][j] != 0) {
+						if (check[j] == 0) {
+							queue.put(j);
+							check[j] = 1;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+/*
+인접리스트로 표현된 그래프를 BFS방식으로 탐색하는 함수
+*/
+void BFS_adjlist(node *G[], int V, int *check) {
+
+	printf("BFS_adjlist\n");
+	int i;
+	node *t;
+	Queue queue(MAX_VERTEX);
+	queue.init_queue();
+	for (i = 0; i < V; i++) check[i] = 0;
+	for (i = 0; i < V; i++) {
+		if (check[i] == 0) {
+			queue.put(i);
+			check[i] = 1;
+			while (queue.getSize() != 0) {
+				i = queue.get();
+				printf("%d-node visited\n", i);
+				for (t = G[i]; t != NULL; t = t->next) {
+					int k = t->vertex;
+					if (check[k] == 0) {
+						queue.put(k);
+						check[k] = 1;
+					}
+				}
+			}
+		}
+	}
+}
+
+int  num_compo_adjmatix(int(*G)[MAX_VERTEX], int V, int *check) {
+	int count = 0;
+	int i, j;
+	DQS stack(MAX_VERTEX);
+	stack.init_stack();
+	for (i = 0; i < V; i++)check[i] = 0;
+	for (i = 0; i < V; i++) {
+		if (check[i] == 0) {
+			printf("\n connected component %d : ", ++count);
+			stack.push(i);
+			check[i] = 1;
+			while (stack.getSize() != 0) {
+				i = stack.pop();
+				for (j = 0; j < V; j++) {
+					if (G[i][j] != 0) {
+						if (check[j] == 0) {
+							stack.push(j);
+							check[j] = 1;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return count;
+}
 
 
 /*
@@ -293,10 +383,10 @@ void Main_graph(int argc, char *argv[], int (*G)[MAX_VERTEX], FILE *fp) {
 	int check[MAX_VERTEX] = {0, };
 	DFS_adjmatrix(G, V, check);
 	nrDFS_ajdmatrix(G, V, check);
+	BFS_adjmatrix(G, V, check);
 
 	return;
 }
-
 
 /*
 list expression test
@@ -316,18 +406,22 @@ void Main_graph_list(int argc, char *argv[], node *G[], FILE *fp) {
 	printf("\n\nAdjacency Matrix representation for graph\n");
 	print_adjlist(G, &V);
 
-	int check[MAX_VERTEX] = { 0, };
+	int check[MAX_VERTEX] = {0, };
 	DFS_adjlist(G, V, check);
 	nrDFS_adjlist(G, V, check);
+	BFS_adjlist(G, V, check);
 
-	printf("what the fuck\n");
-	for (int i = 0; i < MAX_VERTEX; i++) {
+
+	// 이 부분에서 왜 exception이 발생하는지 생각해봅시다.
+	// 최외각 for문에서 조건에 해당하는 부분을 잘 설정해야한다.
+	// i<V로 설정하면 문제없이 작동한다.
+	// i<MAX_VERTEX로 설정하면 예외가 발생한다.
+	for (int i = 0; i < V; i++) {
 		node* temp;
 		for (temp = G[i]; temp != NULL; temp = temp->next) {
 			printf("%d ", temp->vertex);
 		}
 		printf("\n");
-
 	}
 	return;
 }
