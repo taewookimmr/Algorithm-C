@@ -211,17 +211,62 @@ void nrDFS_ajdmatrix(int(*G)[MAX_VERTEX], int V, int* check) {
 	
 }
 
-
+/*
+인접리스트를 구성하는 한 연결요소를 dfs방식으로 순회하는 재귀함수
+*/
 void DFS_recur_list(node *G[], int V, int i, int* check) {
-
+	node *t;
+	check[i] = 1;
+	printf("%d-node visited\n", i);
+	for (t = G[i]; t != NULL; t= t->next) {
+		int j = t->vertex;
+		if (check[j] == 0) {
+			DFS_recur_list(G, V, j, check);
+		}
+	}
 }
 
+/*
+
+인접리스트를 구성하는 모든 연결요소를 순회하는 함수
+재귀함수를 내부적으로 사용한다.
+*/
 void DFS_adjlist(node *G[], int V, int* check) {
-
+	int i;
+	for (i = 0; i < V; i++) check[i] = 0;
+	for (i = 0; i < V; i++) {
+		if (check[i] == 0) {
+			DFS_recur_list(G, V, i, check);
+		}
+	}
 }
-
+/*
+비재귀함수로서
+인접리스트를 구성하는 모든 연결요소를 순회하는 함수
+*/
 void nrDFS_adjlist(node *G[], int V, int* check) {
-
+	int i;
+	node *t;
+	DQS stack(MAX_VERTEX);
+	stack.init_stack();
+	for (i = 0; i < V; i++) check[i] = 0;
+	for (i = 0; i < V; i++) {
+		if (check[i] == 0) {
+			stack.push(i);
+			check[i] = 1;
+			while (stack.getSize()) {
+				i = stack.pop();
+				printf("%d-node visited\n", i);
+				for (t = G[i]; t != NULL; t = t->next) {
+					int j = t->vertex;
+					if (check[j] == 0) {
+						stack.push(j);
+						check[j] = 1;
+					}
+				}
+			}
+		}
+	}
 }
 
 
@@ -272,6 +317,17 @@ void Main_graph_list(int argc, char *argv[], node *G[], FILE *fp) {
 	print_adjlist(G, &V);
 
 	int check[MAX_VERTEX] = { 0, };
+	DFS_adjlist(G, V, check);
+	nrDFS_adjlist(G, V, check);
 
+	printf("what the fuck\n");
+	for (int i = 0; i < MAX_VERTEX; i++) {
+		node* temp;
+		for (temp = G[i]; temp != NULL; temp = temp->next) {
+			printf("%d ", temp->vertex);
+		}
+		printf("\n");
+
+	}
 	return;
 }
