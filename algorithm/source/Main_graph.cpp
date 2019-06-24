@@ -11,6 +11,6 @@ int main(int argc, char *argv[]) {
 	G_list = (node **)malloc(sizeof(node*) * MAX_VERTEX);
 	// 각 요소별로 멤록안해도 된다. 뒷단에서 해준다.
 	Main_graph_list(argc, argv, G_list, fp);
-	Main_graph(argc, argv, G, fp);
+	//Main_graph(argc, argv, G, fp);
 }
 

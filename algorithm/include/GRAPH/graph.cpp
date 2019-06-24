@@ -2,12 +2,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "graph.hpp"
-#include "../QUEUE/Queue.hpp" // queue°¡ ÇÊ¿äÇØ¼­
-#include "../DQS/DoubleQueueStack.hpp" // stackÀÌ ÇÊ¿äÇØ¼­.
+#include "../QUEUE/Queue.hpp" // queueê°€ í•„ìš”í•´ì„œ
+#include "../DQS/DoubleQueueStack.hpp" // stackì´ í•„ìš”í•´ì„œ.
 
 
 /*
-array¸¦ Á¶°Ç¿¡ ¸Â°Ô Ã¤¿ì´Â ÇÔ¼ö
+arrayë¥¼ ì¡°ê±´ì— ë§ê²Œ ì±„ìš°ëŠ” í•¨ìˆ˜
 */
 void input_adjmatrix(int(*G)[MAX_VERTEX], int *v, int *e, FILE *fp) {
 	char vertex[3];
@@ -29,14 +29,14 @@ void input_adjmatrix(int(*G)[MAX_VERTEX], int *v, int *e, FILE *fp) {
 		j = name2int(vertex[1]);
 		G[i][j] = 1;
 		G[j][i] = 1;
-		// out_of_array_index_exceptionÀº ¹ß»ı ¾ÈÇÏ³ª?
+		// out_of_array_index_exceptionì€ ë°œìƒ ì•ˆí•˜ë‚˜?
 
 	}
 
 }
 
 /*
-list¸¦ Á¶°Ç¿¡ ¸Â°Ô Ã¤¿ì´Â ÇÔ¼ö
+listë¥¼ ì¡°ê±´ì— ë§ê²Œ ì±„ìš°ëŠ” í•¨ìˆ˜
 */
 void input_adjlist(node *G[], int *v, int *e, FILE *fp) {
 
@@ -63,7 +63,7 @@ void input_adjlist(node *G[], int *v, int *e, FILE *fp) {
 		t->next = G[i];
 		G[i] = t;
 
-		//¹«Çâ ±×·¡ÇÁÀÇ ´ëÄª¼ºÀ» Ç¥ÇöÇÏ±â À§ÇØ
+		//ë¬´í–¥ ê·¸ë˜í”„ì˜ ëŒ€ì¹­ì„±ì„ í‘œí˜„í•˜ê¸° ìœ„í•´
 		i = name2int(vertex[1]);
 		t = (node*)malloc(sizeof(node));
 		t->vertex = name2int(vertex[0]);
@@ -72,15 +72,15 @@ void input_adjlist(node *G[], int *v, int *e, FILE *fp) {
 	}
 
 	// free(t); 
-	// À§ÀÇ free(t)¸¦ ½ÇÇàÇÏ¸é 
-	// print_adjlist µ¿ÀÛ¿¡ ¿µÇâÀ» ³¢Ä£´Ù. 
-	// ¿Ö? »ç¿ëµÇ°í ÀÖ´Â °ø°£ÀÌ´Ï±î!
+	// ìœ„ì˜ free(t)ë¥¼ ì‹¤í–‰í•˜ë©´ 
+	// print_adjlist ë™ì‘ì— ì˜í–¥ì„ ë¼ì¹œë‹¤. 
+	// ì™œ? ì‚¬ìš©ë˜ê³  ìˆëŠ” ê³µê°„ì´ë‹ˆê¹Œ!
 
 	
 }
 
 /*
-array Ãâ·Â ÇÔ¼ö
+array ì¶œë ¥ í•¨ìˆ˜
 */
 void print_adjmatrix(int(*G)[MAX_VERTEX], int *V) {
 	int size = *V;
@@ -95,7 +95,7 @@ void print_adjmatrix(int(*G)[MAX_VERTEX], int *V) {
 
 
 /*
-list Ãâ·Â ÇÔ¼ö
+list ì¶œë ¥ í•¨ìˆ˜
 */
 void print_adjlist(node *G[], int *V) {
 	int size = *V;
@@ -110,7 +110,7 @@ void print_adjlist(node *G[], int *V) {
 		temp = G[i];
 	
 		for (k = 0; k < size; k++) {
-			condition[k] = 0; 	// condition ¹è¿­ ÃÊ±âÈ­
+			condition[k] = 0; 	// condition ë°°ì—´ ì´ˆê¸°í™”
 		}
 
 		while (temp != NULL) {
@@ -133,29 +133,29 @@ void print_adjlist(node *G[], int *V) {
 
 
 /*
-char{A,B,C,D~}¸¦ int{0,1,2,3~}·Î º¯È¯ÇØÁÖ´Â ÇÔ¼ö
+char{A,B,C,D~}ë¥¼ int{0,1,2,3~}ë¡œ ë³€í™˜í•´ì£¼ëŠ” í•¨ìˆ˜
 */
 int name2int(char c) {
 	return c - 'A';
 }
 
 /*
- int{0,1,2,3~}¸¦ char{A,B,C,D~}·Î º¯È¯ÇØÁÖ´Â ÇÔ¼ö
+ int{0,1,2,3~}ë¥¼ char{A,B,C,D~}ë¡œ ë³€í™˜í•´ì£¼ëŠ” í•¨ìˆ˜
 */
 char int2name(int i) {
 	return i + 'A';
 }
 
 
-/* DFS_recur, 190613 ÀÛ¼º
-ÀÎÁ¢Çà·ÄÀÇ Æ÷ÀÎÅÍ G¿Í Á¤Á¡ÀÇ ¼ö V,
-±×¸®°í ¼øÈ¸¸¦ ½ÃÀÛÇÒ Á¤Á¡ÀÇ ÀÏ·Ã ¹øÈ£¸¦ ÀÎÀÚ·Î ¹Ş¾Æ¼­
-i¹øÂ° Á¤Á¡¿¡ ¿¬°áµÈ ¿¬°á ¿ä¼Ò¿¡ ´ëÇØ ¼øÈ¸ÇÑ´Ù.
-check ¹è¿­µµ ¹Şµµ·Ï ¼öÁ¤ÇÏ¿´´Ù
+/* DFS_recur, 190613 ì‘ì„±
+ì¸ì ‘í–‰ë ¬ì˜ í¬ì¸í„° Gì™€ ì •ì ì˜ ìˆ˜ V,
+ê·¸ë¦¬ê³  ìˆœíšŒë¥¼ ì‹œì‘í•  ì •ì ì˜ ì¼ë ¨ ë²ˆí˜¸ë¥¼ ì¸ìë¡œ ë°›ì•„ì„œ
+ië²ˆì§¸ ì •ì ì— ì—°ê²°ëœ ì—°ê²° ìš”ì†Œì— ëŒ€í•´ ìˆœíšŒí•œë‹¤.
+check ë°°ì—´ë„ ë°›ë„ë¡ ìˆ˜ì •í•˜ì˜€ë‹¤
 */
 void DFS_recur(int(*G)[MAX_VERTEX], int V, int i, int* check) {
 	int j = 0;
-	check[i] = 1; // i¹ø Á¤Á¡À» ¹æ¹®ÇÏ¹Ç·Î Ç¥½ÃÇÑ´Ù.
+	check[i] = 1; // ië²ˆ ì •ì ì„ ë°©ë¬¸í•˜ë¯€ë¡œ í‘œì‹œí•œë‹¤.
 	printf("%d-node visited\n", i);
 	for (j = 0; j < V; j++) {
 		if (G[i][j] != 0) {
@@ -167,8 +167,8 @@ void DFS_recur(int(*G)[MAX_VERTEX], int V, int i, int* check) {
 }
 
 /* DFS_adjmatrix
-DFS_adjlist ÇÔ¼ö´Â ¿©·¯ °³ÀÇ ¿¬°á ¿ä¼Ò·Î ±¸¼ºµÈ ±×·¡ÇÁÀÏ °æ¿ì
-¹æ¹®µÇÁö ¾ÊÀº ¿¬°á ¿ä¼ÒÀÇ Ã¹ Á¤Á¡À» Ã£¾Æ³»¾î DFS_recurÇÔ¼ö¸¦ È£ÃâÇÏ´Â ±â´É
+DFS_adjlist í•¨ìˆ˜ëŠ” ì—¬ëŸ¬ ê°œì˜ ì—°ê²° ìš”ì†Œë¡œ êµ¬ì„±ëœ ê·¸ë˜í”„ì¼ ê²½ìš°
+ë°©ë¬¸ë˜ì§€ ì•Šì€ ì—°ê²° ìš”ì†Œì˜ ì²« ì •ì ì„ ì°¾ì•„ë‚´ì–´ DFS_recurí•¨ìˆ˜ë¥¼ í˜¸ì¶œí•˜ëŠ” ê¸°ëŠ¥
 */
 void DFS_adjmatrix(int(*G)[MAX_VERTEX], int V, int* check) {
 	printf("DFS_adjmatrix\n");
@@ -182,7 +182,7 @@ void DFS_adjmatrix(int(*G)[MAX_VERTEX], int V, int* check) {
 }
 
 /* nrDFS_ajdmatrix
-ºñÀç±ÍÆÇ
+ë¹„ì¬ê·€íŒ
 */
 void nrDFS_ajdmatrix(int(*G)[MAX_VERTEX], int V, int* check) {
 	printf("nrDFS_ajdmatrix\n");
@@ -214,7 +214,7 @@ void nrDFS_ajdmatrix(int(*G)[MAX_VERTEX], int V, int* check) {
 }
 
 /*
-ÀÎÁ¢¸®½ºÆ®¸¦ ±¸¼ºÇÏ´Â ÇÑ ¿¬°á¿ä¼Ò¸¦ dfs¹æ½ÄÀ¸·Î ¼øÈ¸ÇÏ´Â Àç±ÍÇÔ¼ö
+ì¸ì ‘ë¦¬ìŠ¤íŠ¸ë¥¼ êµ¬ì„±í•˜ëŠ” í•œ ì—°ê²°ìš”ì†Œë¥¼ dfsë°©ì‹ìœ¼ë¡œ ìˆœíšŒí•˜ëŠ” ì¬ê·€í•¨ìˆ˜
 */
 void DFS_recur_list(node *G[], int V, int i, int* check) {
 	node *t;
@@ -230,8 +230,8 @@ void DFS_recur_list(node *G[], int V, int i, int* check) {
 
 /*
 
-ÀÎÁ¢¸®½ºÆ®¸¦ ±¸¼ºÇÏ´Â ¸ğµç ¿¬°á¿ä¼Ò¸¦ ¼øÈ¸ÇÏ´Â ÇÔ¼ö
-Àç±ÍÇÔ¼ö¸¦ ³»ºÎÀûÀ¸·Î »ç¿ëÇÑ´Ù.
+ì¸ì ‘ë¦¬ìŠ¤íŠ¸ë¥¼ êµ¬ì„±í•˜ëŠ” ëª¨ë“  ì—°ê²°ìš”ì†Œë¥¼ ìˆœíšŒí•˜ëŠ” í•¨ìˆ˜
+ì¬ê·€í•¨ìˆ˜ë¥¼ ë‚´ë¶€ì ìœ¼ë¡œ ì‚¬ìš©í•œë‹¤.
 */
 void DFS_adjlist(node *G[], int V, int* check) {
 	printf("DFS_adjlist\n");
@@ -244,8 +244,8 @@ void DFS_adjlist(node *G[], int V, int* check) {
 	}
 }
 /*
-ºñÀç±ÍÇÔ¼ö·Î¼­
-ÀÎÁ¢¸®½ºÆ®¸¦ ±¸¼ºÇÏ´Â ¸ğµç ¿¬°á¿ä¼Ò¸¦ ¼øÈ¸ÇÏ´Â ÇÔ¼ö
+ë¹„ì¬ê·€í•¨ìˆ˜ë¡œì„œ
+ì¸ì ‘ë¦¬ìŠ¤íŠ¸ë¥¼ êµ¬ì„±í•˜ëŠ” ëª¨ë“  ì—°ê²°ìš”ì†Œë¥¼ ìˆœíšŒí•˜ëŠ” í•¨ìˆ˜
 */
 void nrDFS_adjlist(node *G[], int V, int* check) {
 	printf("nrDFS_adjlist\n");
@@ -274,7 +274,7 @@ void nrDFS_adjlist(node *G[], int V, int* check) {
 }
 
 /*
-ÀÎÁ¢ Çà·ÄÀ» »ç¿ëÇÏ¿© ³Êºñ¿ì¼±Å½»öÀ» ½Ç½ÃÇÏ´Â ÇÔ¼ö
+ì¸ì ‘ í–‰ë ¬ì„ ì‚¬ìš©í•˜ì—¬ ë„ˆë¹„ìš°ì„ íƒìƒ‰ì„ ì‹¤ì‹œí•˜ëŠ” í•¨ìˆ˜
 */
 void BFS_adjmatrix(int(*G)[MAX_VERTEX], int V, int *check) {
 	printf("BFS_adjmatrix\n");
@@ -303,7 +303,7 @@ void BFS_adjmatrix(int(*G)[MAX_VERTEX], int V, int *check) {
 }
 
 /*
-ÀÎÁ¢¸®½ºÆ®·Î Ç¥ÇöµÈ ±×·¡ÇÁ¸¦ BFS¹æ½ÄÀ¸·Î Å½»öÇÏ´Â ÇÔ¼ö
+ì¸ì ‘ë¦¬ìŠ¤íŠ¸ë¡œ í‘œí˜„ëœ ê·¸ë˜í”„ë¥¼ BFSë°©ì‹ìœ¼ë¡œ íƒìƒ‰í•˜ëŠ” í•¨ìˆ˜
 */
 void BFS_adjlist(node *G[], int V, int *check) {
 
@@ -360,6 +360,37 @@ int  num_compo_adjmatix(int(*G)[MAX_VERTEX], int V, int *check) {
 	return count;
 }
 
+/*
+is_articulating vertex?
+ */
+int AP_recur(node *G[], int i, int *check, int *order, int *son_of_root){
+	printf("%c-node start \n", int2name(i));
+	node *t;
+	int min, m;
+	check[i] = min = ++(*order);
+	for(t = G[i]; t != NULL; t = t->next){
+		if(i == 0 && check[t->vertex] == 0) ++(*son_of_root);
+		// check[t->vertex] == 0 means "not searched yet?"
+
+		if(check[t->vertex] == 0){
+			m = AP_recur(G, t->vertex, check, order, son_of_root); // DFS-like
+			if(m  < min){
+				min = m; // pointing the most highest(ancestor)
+			}
+			if( m >= check[i] && i != 0){
+				printf("yes ap--> %c %2d : %d\n", int2name(i), check[i], m);
+			}else{
+				printf("not ap--> %c %2d : %d\n", int2name(i), check[i], m);
+			}
+		}else{
+			if(check[t->vertex] < min){
+				min = check[t->vertex];
+			}
+		}
+	}
+	return min;
+}
+
 
 /*
 array expression test
@@ -412,10 +443,10 @@ void Main_graph_list(int argc, char *argv[], node *G[], FILE *fp) {
 	BFS_adjlist(G, V, check);
 
 
-	// ÀÌ ºÎºĞ¿¡¼­ ¿Ö exceptionÀÌ ¹ß»ıÇÏ´ÂÁö »ı°¢ÇØº¾½Ã´Ù.
-	// ÃÖ¿Ü°¢ for¹®¿¡¼­ Á¶°Ç¿¡ ÇØ´çÇÏ´Â ºÎºĞÀ» Àß ¼³Á¤ÇØ¾ßÇÑ´Ù.
-	// i<V·Î ¼³Á¤ÇÏ¸é ¹®Á¦¾øÀÌ ÀÛµ¿ÇÑ´Ù.
-	// i<MAX_VERTEX·Î ¼³Á¤ÇÏ¸é ¿¹¿Ü°¡ ¹ß»ıÇÑ´Ù.
+	// ì´ ë¶€ë¶„ì—ì„œ ì™œ exceptionì´ ë°œìƒí•˜ëŠ”ì§€ ìƒê°í•´ë´…ì‹œë‹¤.
+	// ìµœì™¸ê° forë¬¸ì—ì„œ ì¡°ê±´ì— í•´ë‹¹í•˜ëŠ” ë¶€ë¶„ì„ ì˜ ì„¤ì •í•´ì•¼í•œë‹¤.
+	// i<Vë¡œ ì„¤ì •í•˜ë©´ ë¬¸ì œì—†ì´ ì‘ë™í•œë‹¤.
+	// i<MAX_VERTEXë¡œ ì„¤ì •í•˜ë©´ ì˜ˆì™¸ê°€ ë°œìƒí•œë‹¤.
 	for (int i = 0; i < V; i++) {
 		node* temp;
 		for (temp = G[i]; temp != NULL; temp = temp->next) {
@@ -423,5 +454,20 @@ void Main_graph_list(int argc, char *argv[], node *G[], FILE *fp) {
 		}
 		printf("\n");
 	}
+
+
+	int myOrder = 0;
+	int mySon = 0;
+	int* order = &myOrder;
+	int* son = &mySon;
+	int* checkit = (int*)malloc(sizeof(int) * V);
+	for (int i = 0; i < V; i++)
+		checkit[i] = 0;
+	for (int i = 0; i < V; i++) {
+		AP_recur(G, i, checkit, order, son);
+	}
+
+
+
 	return;
 }
