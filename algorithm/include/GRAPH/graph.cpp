@@ -361,26 +361,36 @@ int  num_compo_adjmatix(int(*G)[MAX_VERTEX], int V, int *check) {
 }
 
 /*
-is_articulating vertex?
+(self-modifed version) save whether or not the node is articulating point.
  */
-int AP_recur(node *G[], int i, int *check, int *order, int *son_of_root){
-	printf("%c-node start \n", int2name(i));
+int AP_recur(node *G[], int i, int *check, int *order, int *son_of_root, int *isArti, int *mintop){
+	
 	node *t;
 	int min, m;
-	check[i] = min = ++(*order);
-	for(t = G[i]; t != NULL; t = t->next){
+
+	if (check[i] == 0) {
+		check[i] = min = ++(*order);
+		printf("%c-node start_%d \n", int2name(i), *son_of_root);
+	}
+	else {
+		printf("%c-already checked\n", int2name(i));
+		return mintop[i];
+	}
+
+	int roopCount = 0;
+	for(t = G[i]; t->next != NULL; t = t->next){
+		roopCount++;
 		if(i == 0 && check[t->vertex] == 0) ++(*son_of_root);
-		// check[t->vertex] == 0 means "not searched yet?"
 
 		if(check[t->vertex] == 0){
-			m = AP_recur(G, t->vertex, check, order, son_of_root); // DFS-like
-			if(m  < min){
+			m = AP_recur(G, t->vertex, check, order, son_of_root, isArti, mintop); // DFS-like
+			if(m <= min){
 				min = m; // pointing the most highest(ancestor)
 			}
 			if( m >= check[i] && i != 0){
-				printf("yes ap--> %c %2d : %d\n", int2name(i), check[i], m);
+				isArti[i] = 1;
 			}else{
-				printf("not ap--> %c %2d : %d\n", int2name(i), check[i], m);
+				isArti[i] = 0;
 			}
 		}else{
 			if(check[t->vertex] < min){
@@ -388,7 +398,63 @@ int AP_recur(node *G[], int i, int *check, int *order, int *son_of_root){
 			}
 		}
 	}
+	if (roopCount == 0) isArti[i] = 1;
+	mintop[i] = min;
 	return min;
+}
+
+/*
+
+*/
+void AP_search(node* G[], int V, int* check, int* order, int* son_of_root, int* isArti, int* mintop) {
+	int i;
+	
+	for (i = 0; i < V; i++) {
+		check[i] = 0;
+		isArti[i] = -1;
+		mintop[i] = 0;
+	}
+
+	for(i = 0 ; i < V; i++)
+		AP_recur(G, i, check, order, son_of_root, isArti, mintop);
+
+
+	if (*son_of_root > 1) {
+		isArti[0] = 1;
+	}
+	else {
+		isArti[0] = 0;
+	}
+
+
+	for (i = 0; i < V; i++) {
+
+		if (isArti[i] == 1) {
+			printf("%c-node is articulating point.\n", int2name(i));
+		}
+		else {
+			printf("%c-node is not arti. point.\n", int2name(i));
+		}
+	}
+
+	printf("search order : ");
+	for (i = 0; i < V; i++) {
+		for (int j = 0; j < V; j++) {
+			if (check[j] - 1 == i ) {
+				printf("%c ", int2name(j));
+				break;
+			}
+		}
+	}
+
+	printf("\nmintop  : \n");
+	for (i = 0; i < V; i++) {
+		printf("%c : %d\n", int2name(i), mintop[i]);
+	}
+
+
+
+	return;
 }
 
 
@@ -450,7 +516,7 @@ void Main_graph_list(int argc, char *argv[], node *G[], FILE *fp) {
 	for (int i = 0; i < V; i++) {
 		node* temp;
 		for (temp = G[i]; temp != NULL; temp = temp->next) {
-			printf("%d ", temp->vertex);
+			printf("%c ", int2name(temp->vertex));
 		}
 		printf("\n");
 	}
@@ -461,13 +527,10 @@ void Main_graph_list(int argc, char *argv[], node *G[], FILE *fp) {
 	int* order = &myOrder;
 	int* son = &mySon;
 	int* checkit = (int*)malloc(sizeof(int) * V);
-	for (int i = 0; i < V; i++)
-		checkit[i] = 0;
-	for (int i = 0; i < V; i++) {
-		AP_recur(G, i, checkit, order, son);
-	}
+	int* isArti = (int*)malloc(sizeof(int) * V);
+	int* mintop = (int*)malloc(sizeof(int) * V);
 
-
+	AP_search(G, V, checkit, order, son, isArti, mintop);
 
 	return;
 }

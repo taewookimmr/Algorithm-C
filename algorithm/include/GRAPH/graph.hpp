@@ -28,8 +28,9 @@ void BFS_adjmatrix(int(*G)[MAX_VERTEX], int V, int *check);
 void BFS_adjlist(node *G[], int V, int *check);
 int  num_compo_adjmatix(int(*G)[MAX_VERTEX], int V, int *check);
 
-int AP_recur(node *G[], int i, int *check, int *order, int *son_of_root); 
-void AP_search(node *G[], int V, int *check, int *order, int *son_of_root);
+int AP_recur(node* G[], int i, int* check, int* order, int* son_of_root, int* isArti, int *mintop);
+void AP_search(node *G[], int V, int *check, int *order, int *son_of_root, int* isArti, int *mintop);
+
 
 void Main_graph(int argc, char *argv[], int(*G)[MAX_VERTEX], FILE *fp);
 void Main_graph_list(int argc, char *argv[], node *G[], FILE *fp);
