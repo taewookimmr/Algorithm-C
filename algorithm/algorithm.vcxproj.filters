@@ -51,6 +51,9 @@
     <ClInclude Include="include\DQS\DoubleQueueStack.hpp">
       <Filter>헤더 파일\DQS</Filter>
     </ClInclude>
+    <ClInclude Include="include\GRAPH\wGraph.hpp">
+      <Filter>헤더 파일\GRAPH</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\BaekJoon\BaekJoon.cpp">
@@ -75,6 +78,12 @@
       <Filter>헤더 파일\DQS</Filter>
     </ClCompile>
     <ClCompile Include="source\Main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="include\GRAPH\wGraph.cpp">
+      <Filter>헤더 파일\GRAPH</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Main_wGraph.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
