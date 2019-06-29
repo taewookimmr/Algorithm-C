@@ -21,8 +21,10 @@
   <ItemGroup>
     <ClInclude Include="include\BaekJoon\BaekJoon.hpp" />
     <ClInclude Include="include\DQS\DoubleQueueStack.hpp" />
+    <ClInclude Include="include\GlobalVariables\gv.hpp" />
     <ClInclude Include="include\GRAPH\graph.hpp" />
     <ClInclude Include="include\GRAPH\wGraph.hpp" />
+    <ClInclude Include="include\HEAP\Heap.hpp" />
     <ClInclude Include="include\QUEUE\Queue.hpp" />
     <ClInclude Include="include\SORT\sort.hpp" />
     <ClInclude Include="include\STACK\Stack.hpp" />
@@ -32,6 +34,7 @@
     <ClCompile Include="include\DQS\DoubleQueueStack.cpp" />
     <ClCompile Include="include\GRAPH\graph.cpp" />
     <ClCompile Include="include\GRAPH\wGraph.cpp" />
+    <ClCompile Include="include\HEAP\Heap.cpp" />
     <ClCompile Include="include\QUEUE\Queue.cpp" />
     <ClCompile Include="include\SORT\sort.cpp" />
     <ClCompile Include="include\STACK\Stack.cpp" />
@@ -39,9 +42,11 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="source\Main_graph.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="source\Main_wGraph.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="source\Main_wGraph.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

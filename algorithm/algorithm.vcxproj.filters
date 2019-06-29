@@ -31,6 +31,12 @@
     <Filter Include="헤더 파일\QUEUE">
       <UniqueIdentifier>{eb2778bf-4b3c-4194-bd35-9de51e173c07}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일\HEAP">
+      <UniqueIdentifier>{9e45d40c-bff1-457d-96bf-f047dcc29070}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\GlobalVar">
+      <UniqueIdentifier>{a40cd306-759d-42b0-90b1-f425deb1acba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\BaekJoon\BaekJoon.hpp">
@@ -53,6 +59,12 @@
     </ClInclude>
     <ClInclude Include="include\GRAPH\wGraph.hpp">
       <Filter>헤더 파일\GRAPH</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GlobalVariables\gv.hpp">
+      <Filter>헤더 파일\GlobalVar</Filter>
+    </ClInclude>
+    <ClInclude Include="include\HEAP\Heap.hpp">
+      <Filter>헤더 파일\HEAP</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +97,9 @@
     </ClCompile>
     <ClCompile Include="source\Main_wGraph.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="include\HEAP\Heap.cpp">
+      <Filter>헤더 파일\HEAP</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

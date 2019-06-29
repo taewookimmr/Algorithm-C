@@ -1,7 +1,11 @@
 #pragma once
 
 #include <stdio.h>
-#define MAX_VERTEX 100
+#include "../GlobalVariables/gv.hpp"
+
+#ifndef MAX_VERTEX
+	#define MAX_VERTEX 100
+#endif // !MAX_VERTEX
 
 typedef struct _node {
 	struct _node *next;
