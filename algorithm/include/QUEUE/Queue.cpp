@@ -64,4 +64,3 @@ void Queue::print_queue() {
 	}
 	std::cout << std::endl;
 }
-

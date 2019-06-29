@@ -12,6 +12,7 @@ namespace Heap{
 		}
 		heap[k] = v;
 	}
+	
 	void downheap(int heap[], int n, int k) {
 		int i, v;
 		v = heap[k];
@@ -36,7 +37,7 @@ namespace Heap{
 		int v = heap[1]; // heap[1]Àº »Ñ¸®
 		heap[1] = heap[(*n)--];
 		downheap(heap, *n, 1);
-		return 0;
+		return v;
 	}
 
 	/*
@@ -52,7 +53,6 @@ namespace Heap{
 		for (i = hn; i >= 1; i--)
 			heap[i] = extract(heap, &hn);
 	}
-
 
 	void heap_sort2(int heap[], int n) {
 		int k, t;

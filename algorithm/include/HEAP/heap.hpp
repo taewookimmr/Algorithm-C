@@ -1,7 +1,13 @@
 #pragma once
-#include "../GlobalVariables/gv.hpp"
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+
+#include "../GlobalVariables/GV_Graph.hpp"
 
 namespace Heap {
+
+
 	void upheap(int heap[], int k);
 	void downheap(int heap[], int n, int k);
 	void insert(int heap[], int* n, int v);

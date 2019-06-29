@@ -37,13 +37,13 @@
     <Filter Include="헤더 파일\GlobalVar">
       <UniqueIdentifier>{a40cd306-759d-42b0-90b1-f425deb1acba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일\SET">
+      <UniqueIdentifier>{d3a78e59-3f71-4077-b394-d5e0dd4e817b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\BaekJoon\BaekJoon.hpp">
       <Filter>헤더 파일\BaekJoon</Filter>
-    </ClInclude>
-    <ClInclude Include="include\SORT\sort.hpp">
-      <Filter>헤더 파일\SORT</Filter>
     </ClInclude>
     <ClInclude Include="include\STACK\Stack.hpp">
       <Filter>헤더 파일\STACK</Filter>
@@ -51,28 +51,28 @@
     <ClInclude Include="include\QUEUE\Queue.hpp">
       <Filter>헤더 파일\QUEUE</Filter>
     </ClInclude>
-    <ClInclude Include="include\GRAPH\graph.hpp">
-      <Filter>헤더 파일\GRAPH</Filter>
-    </ClInclude>
     <ClInclude Include="include\DQS\DoubleQueueStack.hpp">
       <Filter>헤더 파일\DQS</Filter>
     </ClInclude>
-    <ClInclude Include="include\GRAPH\wGraph.hpp">
-      <Filter>헤더 파일\GRAPH</Filter>
-    </ClInclude>
-    <ClInclude Include="include\GlobalVariables\gv.hpp">
-      <Filter>헤더 파일\GlobalVar</Filter>
-    </ClInclude>
     <ClInclude Include="include\HEAP\Heap.hpp">
       <Filter>헤더 파일\HEAP</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GRAPH\Graph.hpp">
+      <Filter>헤더 파일\GRAPH</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SET\Set.hpp">
+      <Filter>헤더 파일\SET</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GlobalVariables\GV_Graph.hpp">
+      <Filter>헤더 파일\GlobalVar</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SORT\Sort.hpp">
+      <Filter>헤더 파일\SORT</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\BaekJoon\BaekJoon.cpp">
       <Filter>헤더 파일\BaekJoon</Filter>
-    </ClCompile>
-    <ClCompile Include="include\SORT\sort.cpp">
-      <Filter>헤더 파일\SORT</Filter>
     </ClCompile>
     <ClCompile Include="include\STACK\Stack.cpp">
       <Filter>헤더 파일\STACK</Filter>
@@ -80,26 +80,23 @@
     <ClCompile Include="include\QUEUE\Queue.cpp">
       <Filter>헤더 파일\QUEUE</Filter>
     </ClCompile>
-    <ClCompile Include="include\GRAPH\graph.cpp">
-      <Filter>헤더 파일\GRAPH</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Main_graph.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="include\DQS\DoubleQueueStack.cpp">
       <Filter>헤더 파일\DQS</Filter>
     </ClCompile>
     <ClCompile Include="source\Main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="include\GRAPH\wGraph.cpp">
-      <Filter>헤더 파일\GRAPH</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Main_wGraph.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="include\HEAP\Heap.cpp">
       <Filter>헤더 파일\HEAP</Filter>
+    </ClCompile>
+    <ClCompile Include="include\GRAPH\Graph.cpp">
+      <Filter>헤더 파일\GRAPH</Filter>
+    </ClCompile>
+    <ClCompile Include="include\SET\Set.cpp">
+      <Filter>헤더 파일\SET</Filter>
+    </ClCompile>
+    <ClCompile Include="include\SORT\Sort.cpp">
+      <Filter>헤더 파일\SORT</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
