@@ -8,6 +8,7 @@
 #define MAX_VERTEX 100
 #define UNSEEN (-INT_MAX)
 #define SENTINEL INT_MAX
+#define INFINITE 1000
 
 #define MAX_EDGE 100;
 

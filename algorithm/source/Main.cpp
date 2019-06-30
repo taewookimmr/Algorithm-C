@@ -7,7 +7,7 @@
 #define __SET__				103
 
 
-#define __MAIN__ __WGRAPH_KRUSKAL__
+#define __MAIN__ __WGRAPH_PFS__
 
 int main(int argc, char* argv[]) {
 

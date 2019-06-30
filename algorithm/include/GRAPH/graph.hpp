@@ -41,12 +41,19 @@ namespace Graph {
 
 namespace WeightGraph {
 
+	typedef struct _node {
+		struct _node* next;
+		int vertex;
+		int weight;
+	} node;
+
+	typedef struct _edge {
+		int v1, v2;
+		int weight;
+	}edge;
+
+
 	namespace PFS {
-		typedef struct _node {
-			struct _node* next;
-			int vertex;
-			int weight;
-		} node;
 
 
 		void upheap(int heap[], int k);
@@ -54,13 +61,16 @@ namespace WeightGraph {
 		void adjust_heap(int heap[], int n);
 		void print_heap(int heap[]);
 
-		int pq_update(int h[], int v, int p);
+		int pq_update(int h[], int v, int accu_wt);
+		int pq_update_spp(int h[], node* G_spp, int v, int accu_wt, int par);
 		void pq_init();
 		int pq_empty();
 		int pq_extract(int heap[]);
 
 		int name2int(char c);
 		int int2name(int i);
+
+		void input_adjmatrix(int G[][MAX_VERTEX], int* v, int* e);
 
 		void input_adjlist(node* G[], int* V, int* E);
 		void print_adjlist(node* G[], int V);
@@ -70,15 +80,14 @@ namespace WeightGraph {
 		void visit(int index);
 
 		void PFS_adjlist(node* G[], int V);
+		void shortest_adjlist(node* G[], node* G_spp[], int start, int V);
+		void shortest_dijkstra(int G[][MAX_VERTEX], node* G_spp[], int start, int V);
 
 		void Main(int argc, char* argv[]);
 	}
 
 	namespace Kruskal {
-		typedef struct _edge {
-			int v1, v2;
-			int weight;
-		}edge;
+	
 
 		int name2int(char c);
 		char int2name(int i);
@@ -98,6 +107,8 @@ namespace WeightGraph {
 		void kruskal(edge e[], int V, int E);
 		void Main(int argc, char* argv[]);
 	}
+
+
 
 }
 

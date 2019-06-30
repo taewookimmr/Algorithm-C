@@ -552,11 +552,15 @@ namespace WeightGraph {
 
 	namespace PFS {
 		FILE* fp;
+		int G_matrix[MAX_VERTEX][MAX_VERTEX];
 		node* G_list[MAX_VERTEX];
+		node* G_spp[MAX_VERTEX]; // 최단 경로를 저장하는 노드 포인터 배열
 		int check[MAX_VERTEX];
 		int parent[MAX_VERTEX];
 		int nheap = 0;
 		int heap[MAX_VERTEX];
+
+		int distance_dijkstra[MAX_VERTEX];
 
 		/*
 			indirect upheap
@@ -600,7 +604,6 @@ namespace WeightGraph {
 			}
 		}
 
-
 		void print_heap(int heap[]) {
 			int i;
 			printf("\n");
@@ -609,18 +612,53 @@ namespace WeightGraph {
 			}
 		}
 
-		int pq_update(int heap[], int v, int p) {
+		int pq_update(int heap[], int v, int accu_wt) {
 			if (check[v] == UNSEEN) {
 				heap[++nheap] = v; // 정점 v가 아직 보이지 않는 정점이라면, heap에 정점 v를 추가한다.
-				check[v] = p;      // p는 정점 v의 가중치에 해당한다.(음수 값으로 들어온다)
+				check[v] = accu_wt;      // p는 정점 v의 가중치에 해당한다.(음수 값으로 들어온다)
 				upheap(heap, nheap); // heap을 재조정한다.
 				return 1;
 			}
 			else {
-				if (check[v] < p) {
+				if (check[v] < accu_wt) {
 					// 새로 들어온 가중치가 더 높다면 
-					check[v] = p;
+					check[v] = accu_wt;
 					adjust_heap(heap, nheap);
+					return 1;
+				}
+				else {
+					return 0;
+				}
+			}
+		}
+
+		/*
+			shortest path problem에서
+			시작 노드에서 각 노드로 가능 최단 경로의 길이 뿐만 아니라,
+			경로를 저장하기 위해 pq_update를 수정한 함수
+			G_spp, 노드 포인터 배열을 계속 업데이트 해준다.
+		*/
+
+		int pq_update_spp(int h[], node* G_spp[], int v, int accu_wt, int par) {
+
+			if (check[v] == UNSEEN) {
+				heap[++nheap] = v; // 정점 v가 아직 보이지 않는 정점이라면, heap에 정점 v를 추가한다.
+				check[v] = accu_wt;      // p는 정점 v의 가중치에 해당한다.(음수 값으로 들어온다)
+				upheap(heap, nheap); // heap을 재조정한다.
+
+				node* newnode = (node*) malloc(sizeof(node)); 
+				newnode->vertex = v;
+				newnode->weight = 0;
+				newnode->next = G_spp[par];
+				G_spp[v] = newnode;
+				return 1;
+			}
+			else {
+				if (check[v] < accu_wt) {
+					// 새로 들어온 가중치가 더 높다면 
+					check[v] = accu_wt;
+					adjust_heap(heap, nheap);
+					G_spp[v]->next = G_spp[par];
 					return 1;
 				}
 				else {
@@ -653,6 +691,36 @@ namespace WeightGraph {
 			return Graph::int2name(i);
 		}
 
+		void input_adjmatrix(int G[][MAX_VERTEX], int* v, int* e) {
+			char vertex[3];
+			int i, j, k, w;
+
+			printf("\nInput number of Vertex & Edge\n");
+			fscanf(fp, "%d %d", v, e);
+			for (i = 0; i < *v; i++)
+				for (j = 0; j < *v; j++)
+					G[i][j] = 0;
+
+			for (i = 0; i < *v; i++) {
+				for (j = 0; j < *v; j++) {
+					G[i][j] = INFINITE;
+				}
+			}
+
+			for (i = 0; i < *v; i++)
+				G[i][i] = 0;
+
+			for (k = 0; k < *e; k++) {
+				if (fp == stdin)
+					printf("\nInput two Vertex consist of Edge & its Weight --> ");
+				fscanf(fp, "%s %d", vertex, &w);
+				i = name2int(vertex[0]);
+				j = name2int(vertex[1]);
+				G[i][j] = w;
+				G[j][i] = w;
+			}
+		}
+		
 		void input_adjlist(node* G[], int* V, int* E) {
 			char vertex[3];
 			int i, j, w;
@@ -758,6 +826,95 @@ namespace WeightGraph {
 			}
 		}
 
+		/*
+			Graph 위의 start 노드에서 각 노드까지의 최단거리를 check[]에 담아주는 함수
+			말 그대로 최단거리만 확인할 수 있다.
+			최단거리 뿐만 아니라 해당 최단거리에 해당하는 경로까지 저장하도록 업그레이드 해봅시다.
+			node 포인터 배열을 애초에 인수로 넣어두도록 합시다.
+		*/
+		void shortest_adjlist(node* G[], node *G_spp[], int start, int V) {
+			int i;
+			node* t;
+			pq_init();
+			for (i = 0; i < V; i++) {
+				check[i] = UNSEEN;
+				parent[i] = 0;
+			}
+			i = start;
+
+			if (check[i] == UNSEEN) {
+				parent[i] = -1;
+				pq_update_spp(heap, G_spp, i, 0, i);
+				while (!pq_empty()) {
+				
+					i = pq_extract(heap);  // i의 용도는 heap에서 extract된 애를 받아주는 역할 
+					check[i] = -check[i];
+
+					for (t = G[i]; t!= NULL; t = t->next) {
+						if (check[t->vertex] < 0) { // meaningless?
+							if (pq_update_spp(heap, G_spp, t->vertex, -t->weight - check[i], i )) {
+								parent[t->vertex] = i;
+							}
+						}
+					}
+				} // end of while
+			} // end of if
+			print_adjlist(G_spp, V);
+		} // end of function
+
+		void shortest_dijkstra(int G[][MAX_VERTEX], node* G_spp[], int start, int V) {
+
+			int x = 0, y, d;
+			int i, checked = 0;
+			for (x = 0; x < V; x++) {
+				// 시작 정점 start로 distance[]와 parent[]를 초기화 한다.
+				distance_dijkstra[x] = G[start][x];
+				if (x != start) parent[x] = start;
+			}
+
+		
+			check[start] = 1; // 시작 정점 start를 체크함
+			checked++;
+
+			for (int j = 0; j < V; j++) {
+				G_spp[j] = (node*)malloc(sizeof(node));
+				G_spp[j]->vertex = j;
+				G_spp[j]->weight = 0;
+				G_spp[j]->next = NULL;
+			}
+
+			for (int j = 0; j < V; j++) {
+				if(j != start)
+					G_spp[j]->next = G_spp[start];
+			}
+		
+
+			while (checked < V) {
+				x = 0;
+
+				while (check[x]) x++;
+
+				for (i = x; i < V; i++) {
+					if (check[i] == 0 && distance_dijkstra[i] < distance_dijkstra[x]) x = i;
+				}
+
+				// x는 체크되지 않은 정점 중에서 start로부터의 가중치가 가장 작은 정점
+				check[x] = 1;
+				checked++;
+
+				for (y = 0; y < V; y++) {
+					if (x == y || G[x][y] >= INFINITE || check[y]) continue;
+					d = distance_dijkstra[x] + G[x][y];
+					if (d < distance_dijkstra[y]) {
+						distance_dijkstra[y] = d;
+						parent[y] = x;
+						G_spp[y]->next = G_spp[x];
+					}
+				}
+			}
+			print_adjlist(G_spp, V);
+		}
+
 		void Main(int argc, char* argv[]) {
 			int V, E;
 			if (argc < 2)
@@ -769,15 +926,27 @@ namespace WeightGraph {
 				}
 			}
 
-			input_adjlist(G_list, &V, &E);
-			printf("\n\nOrigianl Graph\n");
-			print_adjlist(G_list, V);
-			printf("\n\nVisit order of Minimum Spanning Tree\n");
-			PFS_adjlist(G_list, V);
-			printf("\n\nTree structure\n");
-			print_tree(parent, V);
-			printf("\n\nMinimum Cost is \n");
-			print_cost(check, V);
+			int mode = 1;
+
+			if (mode == 1) {
+				input_adjlist(G_list, &V, &E);
+				printf("\n\nOrigianl Graph\n");
+				print_adjlist(G_list, V);
+				printf("\n\nVisit order of Minimum Spanning Tree\n");
+				PFS_adjlist(G_list, V);
+				printf("\n\nTree structure\n");
+				print_tree(parent, V);
+				printf("\n\nMinimum Cost is \n");
+				print_cost(check, V);
+				printf("\n\nShortest path from F is \n");
+				shortest_adjlist(G_list, G_spp, 5, V);
+			}
+			else {
+				input_adjmatrix(G_matrix, &V, &E);
+				printf("\n\nDijkstra path from F is \n");
+				shortest_dijkstra(G_matrix, G_spp, 5, V);
+			}
+
 			fclose(fp);
 		}
 	}
