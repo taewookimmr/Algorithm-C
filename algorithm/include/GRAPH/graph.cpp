@@ -1126,4 +1126,156 @@ namespace WeightGraph {
 
 } // end of namespace WeightGraph
 
+namespace DirGraph {
 
+	FILE* fp;
+	int  G_matrix[MAX_VERTEX][MAX_VERTEX];
+	node* G[MAX_VERTEX];
+
+	int check[MAX_VERTEX];
+
+	void input_adjmatrix(int G_mat[][MAX_VERTEX], int* V, int* E) {
+		char vertex[3];
+		int i, j, k;
+		printf("\nInput number of Vertex & Edge\n");
+		fscanf(fp, "%d %d", V, E);
+		for (i = 0; i < *V; i++) {
+			for (j = 0; j < *V; j++) {
+				G_mat[i][j] = 0;
+			}
+		}
+		for (i = 0; i < *V; i++)	G_mat[i][i] = 0;
+
+		for (k = 0; k < *E; k++) {
+			printf("\n Input two Vertex consist of Edge ->");
+			fscanf(fp, "%s", vertex);
+			i = name2int(vertex[0]);
+			j = name2int(vertex[1]);
+			G_mat[i][j] = 1;
+		}
+
+	}
+	void input_adjlist(node* G[], int* V, int* E) {
+		char vertex[3];
+		int i, j;
+		node* t;
+		printf("\nInput number of Vertex & Edge\n");
+		fscanf(fp, "%d %d", V, E);
+		for (i = 0; i < *V; i++) G[i] = NULL;
+		for (j = 0; j < *E; j++) {
+
+			printf("\nInput two Vertex consist of Edge -> ");
+			fscanf(fp, "%s", vertex);
+
+			i = name2int(vertex[0]);
+			t = (node*)malloc(sizeof(node));
+			t->vertex = name2int(vertex[1]);
+			t->next = G[i];
+			G[i] = t;
+		}
+	}
+
+	int name2int(char c) {
+		return Graph::name2int(c);
+	}
+
+	int int2name(int i) {
+		return Graph::int2name(i);
+	}
+
+	void visit(int index) {
+		printf("%c ", int2name(index));
+	}
+
+	void DFS_directed(node* G[], int V) {
+		int i, j;
+		node* t;
+		DQS stack(MAX_VERTEX);
+		stack.init_stack();
+		for (i = 0; i < V; i++) { 
+			for (j = 0; j < V; j++) {
+				check[j] = 0;  // 이 부분이 차이점
+				// nrDFS_adjlist와 비교해보자.
+				// 모든 i 정점(출발)에 대해서 도달할 수 있는 곳을
+				// 확인하기 전에 check배열을 초기화한다.
+			}
+			stack.push(i);
+			check[i] = 1;
+			printf("\n %c : ", int2name(i));
+			while (stack.getSize()) {
+				j = stack.pop();
+				visit(j);
+				for (t = G[j]; t != NULL; t = t->next) {
+					if (check[t->vertex] == 0) {
+						stack.push(t->vertex);
+						check[t->vertex] = 1;
+					}
+				}
+			}		
+		}	
+	} // end of DFS_directed
+
+
+	void warshall(int G_mat[][MAX_VERTEX], int V) {
+		int x, y, i;
+
+		for (int j = 0; j < V; j++) G_mat[j][j] = 1; 
+		// 위 for문은 G_mat의 용도 변경이라고 할 수 있다.
+
+		for (y = 0; y < V; y++)
+			for (x = 0; x < V; x++)
+				if (G_mat[x][y])
+					for (i = 0; i < V; i++)
+						if (G_mat[y][i])
+							G_mat[x][i] = 1;
+
+		for (y = 0; y < V; y++) {
+			printf("%c : ", int2name(y));
+			for (x = 0; x < V; x++) {
+				if (G_mat[y][x]) {
+					printf("%c ", int2name(x));
+				}
+			}
+			printf("\n");
+		}
+		// 이렇게 해서 얻어지는 G, 2차원배열은 
+		// 그 의미가 본래의 의미와 달라진다.
+		// 본래의 G는 인접된 정점들에 바로(one bridge) 접근 가능한지의 여부를 저장하는 것
+		// 반면 이 함수를 통해 얻어지는 G는 
+		// 각 정점에서 다른 정점까지 어떻게든 갈 수 있는지 없는 지의 여부를 저장하는 것
+	}
+
+
+	void Main(int argc, char* argv[]) {
+		int V, E;
+		if (argc < 2)
+			fp = stdin;
+		else {
+			if ((fp = fopen(argv[1], "rt")) == NULL) {
+				printf("\n That file does not exist !");
+				exit(1);
+			}
+		}
+
+		input_adjlist(G, &V, &E);
+
+		printf("\n\nDFS_directed\n");
+		DFS_directed(G, V);
+
+
+		if (argc < 2)
+			fp = stdin;
+		else {
+			if ((fp = fopen(argv[1], "rt")) == NULL) {
+				printf("\n That file does not exist !");
+				exit(1);
+			}
+		}
+		input_adjmatrix(G_matrix, &V, &E);
+		printf("\n\nWarshall\n");
+		warshall(G_matrix, V);
+
+	
+		fclose(fp);
+	}
+}

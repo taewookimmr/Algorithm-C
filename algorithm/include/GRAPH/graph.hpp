@@ -112,3 +112,20 @@ namespace WeightGraph {
 
 }
 
+namespace DirGraph {
+	typedef struct _node {
+		struct _node* next;
+		int vertex;
+	} node;
+
+	void input_adjmatrix(int(*G)[MAX_VERTEX], int* V, int* E);
+	void input_adjlist(node* G[], int* V, int* E);
+	int name2int(char c);
+	int int2name(int i);
+
+	void visit(int index);
+	void DFS_directed(node* G[], int V);
+	void warshall(int G[][MAX_VERTEX], int V);
+
+	void Main(int argc, char* argv[]);
+}

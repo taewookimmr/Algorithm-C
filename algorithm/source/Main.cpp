@@ -5,9 +5,10 @@
 #define __WGRAPH_PFS__		101
 #define __WGRAPH_KRUSKAL__	102
 #define __SET__				103
+#define __DGRAPH__			104
 
 
-#define __MAIN__ __WGRAPH_PFS__
+#define __MAIN__ __DGRAPH__
 
 int main(int argc, char* argv[]) {
 
@@ -40,6 +41,12 @@ int main(int argc, char* argv[]) {
 	#endif
 
 
+	#if __MAIN__ == __DGRAPH__
+		argc = 2;
+		argv[0] = (char*)"algorithm.exe";
+		argv[1] = (char*) "../Debug/res/dgraph.txt";
+		DirGraph::Main(argc, argv);
+	#endif
 
 
 }
