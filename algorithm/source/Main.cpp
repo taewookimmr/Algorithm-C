@@ -42,9 +42,6 @@ int main(int argc, char* argv[]) {
 
 
 	#if __MAIN__ == __DGRAPH__
-		argc = 2;
-		argv[0] = (char*)"algorithm.exe";
-		argv[1] = (char*) "../Debug/res/dgraph.txt";
 		DirGraph::Main(argc, argv);
 	#endif
 

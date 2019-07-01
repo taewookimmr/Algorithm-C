@@ -118,14 +118,32 @@ namespace DirGraph {
 		int vertex;
 	} node;
 
-	void input_adjmatrix(int(*G)[MAX_VERTEX], int* V, int* E);
+	typedef struct _head {
+		int count;
+		node* next;
+	} head;
+
+
+	void print_adjlist(node* G[], int* V);
+	void input_adjmatrix(int G_mat[][MAX_VERTEX], int* V, int* E);
+	void input_adjmatrix_floyd(int G_mat_floyd[][MAX_VERTEX], int* V, int* E);
 	void input_adjlist(node* G[], int* V, int* E);
 	int name2int(char c);
 	int int2name(int i);
 
 	void visit(int index);
 	void DFS_directed(node* G[], int V);
-	void warshall(int G[][MAX_VERTEX], int V);
+	void warshall(int G_mat[][MAX_VERTEX], int V);
+	void floyd   (int G_mat_floyd[][MAX_VERTEX], int V);
+
+	void set_count_indegree(head net[], int V);
+	void topsort(head net[], int V);
+
+	void set_count_outdegree(head net[], int V);
+	void revtopsort(head net[], int V);
+
+	int strong_recur(node* G[], int i);
+	void strong(node* G[], int V);
 
 	void Main(int argc, char* argv[]);
 }

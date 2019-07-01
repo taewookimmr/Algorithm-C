@@ -387,9 +387,9 @@ namespace Graph {
 			return mintop[i];
 		}
 
-		int roopCount = 0;
+		int loopCount = 0;
 		for(t = G[i]; t->next != NULL; t = t->next){
-			roopCount++;
+			loopCount++;
 			if(i == 0 && check[t->vertex] == 0) ++(*son_of_root);
 
 			if(check[t->vertex] == 0){
@@ -408,7 +408,7 @@ namespace Graph {
 				}
 			}
 		}
-		if (roopCount == 0) isArti[i] = 1;
+		if (loopCount == 0) isArti[i] = 1;
 		mintop[i] = min;
 		return min;
 	}
@@ -691,16 +691,20 @@ namespace WeightGraph {
 			return Graph::int2name(i);
 		}
 
+		/*
+			dijkstra 알고리즘을 위한 인접행렬을 채우는 함수
+		*/
 		void input_adjmatrix(int G[][MAX_VERTEX], int* v, int* e) {
 			char vertex[3];
 			int i, j, k, w;
 
 			printf("\nInput number of Vertex & Edge\n");
 			fscanf(fp, "%d %d", v, e);
+/*
 			for (i = 0; i < *v; i++)
 				for (j = 0; j < *v; j++)
 					G[i][j] = 0;
-
+*/
 			for (i = 0; i < *v; i++) {
 				for (j = 0; j < *v; j++) {
 					G[i][j] = INFINITE;
@@ -1130,9 +1134,54 @@ namespace DirGraph {
 
 	FILE* fp;
 	int  G_matrix[MAX_VERTEX][MAX_VERTEX];
+	int  G_matrix_floyd[MAX_VERTEX][MAX_VERTEX];
 	node* G[MAX_VERTEX];
+	head  net[MAX_VERTEX];
 
 	int check[MAX_VERTEX];
+	int order = 0; // strong test에서 사용되는 변수
+	DQS stack_strong(MAX_VERTEX);
+	int stack_init_flag = 0;
+	
+
+	/*
+	list 출력 함수
+	*/
+	void print_adjlist(node* G[], int* V) {
+		int size = *V;
+		int i = 0, j = 0, k = 0;
+
+		node* temp = NULL;
+		int* condition = NULL;
+		condition = (int*)malloc(sizeof(int) * size);
+
+		for (i = 0; i < size; i++) {
+
+			temp = G[i];
+
+			for (k = 0; k < size; k++) {
+				condition[k] = 0; 	// condition 배열 초기화
+			}
+
+			while (temp != NULL) {
+				condition[temp->vertex] = 1;
+				temp = temp->next;
+			}
+
+			for (j = 0; j < size; j++) {
+				if (condition[j])
+					printf("%2d", 1);
+				else
+					printf("%2d", 0);
+			}
+			printf("\n");
+		}
+
+		free(temp);
+		free(condition);
+	}
+
+
 
 	void input_adjmatrix(int G_mat[][MAX_VERTEX], int* V, int* E) {
 		char vertex[3];
@@ -1155,13 +1204,41 @@ namespace DirGraph {
 		}
 
 	}
+	
+	/*
+		prepare the adjacent matrix fo floyd algorithm
+	*/
+	void input_adjmatrix_floyd(int G_mat[][MAX_VERTEX], int* V, int* E) {
+		char vertex[3];
+		int i, j, k;
+		int w;
+		printf("\nInput number of Vertex & Edge\n");
+		fscanf(fp, "%d %d", V, E);
+
+
+		for (i = 0; i < *V; i++)
+			for (j = 0; j < *V; j++)
+				G_mat[i][j] = INFINITE;
+
+		for (i = 0; i < *V; i++)	G_mat[i][i] = 0;
+		
+
+		for (k = 0; k < *E; k++) {
+			printf("\n Input two Vertex consist of Edge and weight ->");
+			fscanf(fp, "%s %d", vertex, &w);
+			i = name2int(vertex[0]);
+			j = name2int(vertex[1]);
+			G_mat[i][j] = w;
+		}
+	}
+	
 	void input_adjlist(node* G[], int* V, int* E) {
 		char vertex[3];
 		int i, j;
 		node* t;
 		printf("\nInput number of Vertex & Edge\n");
 		fscanf(fp, "%d %d", V, E);
-		for (i = 0; i < *V; i++) G[i] = NULL;
+		for (i = 0; i < *V; i++) G[i] = NULL; // 이 부분이 다르구나?
 		for (j = 0; j < *E; j++) {
 
 			printf("\nInput two Vertex consist of Edge -> ");
@@ -1216,6 +1293,9 @@ namespace DirGraph {
 	} // end of DFS_directed
 
 
+	/*
+		warshall
+	*/
 	void warshall(int G_mat[][MAX_VERTEX], int V) {
 		int x, y, i;
 
@@ -1245,37 +1325,248 @@ namespace DirGraph {
 		// 각 정점에서 다른 정점까지 어떻게든 갈 수 있는지 없는 지의 여부를 저장하는 것
 	}
 
+	/*
+		floyd
+	*/
+	void floyd(int G_mat_floyd[][MAX_VERTEX], int V) {
+		int x, y, i;
+		for (y = 0; y < V; y++)
+			for (x = 0; x < V; x++)
+				for (i = 0; i < V; i++)
+					if (G_mat_floyd[x][y] + G_matrix_floyd[y][i] < G_matrix_floyd[x][i])
+						G_mat_floyd[x][i] = G_mat_floyd[x][y] + G_mat_floyd[y][i];
 
-	void Main(int argc, char* argv[]) {
-		int V, E;
-		if (argc < 2)
-			fp = stdin;
-		else {
-			if ((fp = fopen(argv[1], "rt")) == NULL) {
-				printf("\n That file does not exist !");
-				exit(1);
+		for (y = 0; y < V; y++) {
+			printf("%c : ", int2name(y));
+			for (x = 0; x < V; x++) {
+				if (G_mat_floyd[y][x] < INFINITE)
+					printf("%2d ", G_mat_floyd[y][x]);
+				else {
+					printf("%2c ", 'X');
+				}
 			}
+			printf("\n");
 		}
-
-		input_adjlist(G, &V, &E);
-
-		printf("\n\nDFS_directed\n");
-		DFS_directed(G, V);
-
-
-		if (argc < 2)
-			fp = stdin;
-		else {
-			if ((fp = fopen(argv[1], "rt")) == NULL) {
-				printf("\n That file does not exist !");
-				exit(1);
-			}
-		}
-		input_adjmatrix(G_matrix, &V, &E);
-		printf("\n\nWarshall\n");
-		warshall(G_matrix, V);
+	}
 
 	
+	/*
+		Topological sorting에서 필요한 각 정점의 indegree를 저장하는 함수
+	*/
+	void set_count_indegree(head net[], int V) {
+		int i, j;
+		int count;
+		node* t;
+		for (i = 0; i < V; i++) {
+			count = 0;
+			for (j = 0; j < V; j++) {
+				for (t = net[j].next; t; t = t->next) {
+					if (t->vertex == i)count++;
+				}
+			}
+			net[i].count = count;
+		}
+	}
+
+	void topsort(head net[], int V) {
+		int i, j, k;
+		node* ptr;
+		DQS stack(MAX_VERTEX);
+
+		stack.init_stack();
+
+		set_count_indegree(net, V);
+
+		for (i = 0; i < V; i++) {
+			if (net[i].count == 0) {
+				void set_count_outdegree(head net[], int V);
+				void revtopsort(head net[], int V);
+
+				stack.push(i);
+			}
+		}
+
+		for (i = 0; i < V; i++) {
+			if (stack.getSize() == 0) {
+				printf("\nNetwork has a cycle, Sort Terminated !");
+				return;
+			}
+			else {
+				j = stack.pop();
+				//printf("%c is poped from this stack\n", int2name(j));
+				printf("[%c visited]\n", int2name(j));
+				for (ptr = net[j].next; ptr != NULL; ptr = ptr->next) {
+					k = ptr->vertex;
+					net[k].count--;
+					if (net[k].count == 0) {
+						stack.push(k);
+						//printf("%c is pushed into this stack\n", int2name(k));
+					}
+				}
+			}
+		}
+		printf("\n\nend of topological sorting\n");
+	}
+
+	void set_count_outdegree(head net[], int V) {
+		int i;
+		int count;
+		node* t;
+		for (i = 0; i < V; i++) {
+			count = 0;
+			for (t = net[i].next; t; t = t->next)
+				count++;
+			net[i].count = count;
+		}
+	}
+
+	void revtopsort(head net[], int V) {
+		int i, j, k;
+		node* ptr;
+		DQS stack(MAX_VERTEX);
+		stack.init_stack();
+
+		set_count_outdegree(net, V);
+
+		for (i = 0; i < V; i++) {
+			if (net[i].count == 0) stack.push(i);
+			printf("%c %d\n", int2name(i), net[i].count);
+		}
+
+		for (i = 0; i < V; i++) {
+			if (stack.getSize() == 0) {
+				printf("\nNetwork has a cycle. reovtopsort terminated !");
+				return;
+			}
+			else {
+				j = stack.pop();
+				printf("[%c visited]\n", int2name(j));
+				for (k = 0; k < V; k++) {
+					for (ptr = net[k].next; ptr; ptr = ptr->next) {
+						if (ptr->vertex == j) {
+							net[k].count--;
+							if (net[k].count == 0)
+								stack.push(k);
+						}
+					}
+				}
+			}
+		}
+		printf("\n\nend of Reverse topological sorting\n");
+	}
+
+
+	int strong_recur(node* G[], int i) {
+		int m, min;
+		int k;
+		int flag;
+		node* t;
+		check[i] = min = ++order;
+		// stack을 처음에 한 번 초기화 시켜주는 역할
+		if (!stack_init_flag) {
+			stack_strong.init_stack();
+			stack_init_flag = 1;
+		}
+		stack_strong.push(i);
+		for (t = G[i]; t != NULL; t = t->next) {
+			if (check[t->vertex] == 0)
+				m = strong_recur(G, t->vertex);
+			else
+				m = check[t->vertex];
+
+			if (m < min) min = m;
+		}
+		if (min == check[i]) {
+			flag = 0;
+			while ((k = stack_strong.pop()) != i) {
+				printf("[%c]-", int2name(k));
+				check[k] = MAX_VERTEX + 1;
+				flag = 1;
+			}
+			if (flag) printf("[%c]\n", int2name(k));
+		}
+		return min;
+	}
+	void strong(node* G[], int V) {
+		int i, k;
+		for (i = 0; i < V; i++)
+			check[i] = 0;
+		for (i = 0; i < V; i++) {
+			if (check[i] == 0)
+				strong_recur(G, i);
+		}
+	}
+
+	void Main(int argc, char* argv[]) {
+
+		int V, E;
+
+		enum mymode { DFS_dir, Warshall, Floyd, Topological, Strong};
+		mymode mode = Strong;
+
+		argc = 2;
+		argv[0] = (char*)"algorithm.exe";
+		switch (mode) {
+			case 0:
+			case 1: argv[1] = (char*) "../Debug/res/dgraph.txt";   break;
+			case 3: argv[1] = (char*) "../Debug/res/topology.txt"; break;
+			case 2:	argv[1] = (char*) "../Debug/res/floyd.txt";    break;
+			case 4: argv[1] = (char*) "../Debug/res/strong.txt";   break;
+				                     
+			default:break;
+		}
+	
+	
+		if (argc < 2)
+			fp = stdin;
+		else {
+			if ((fp = fopen(argv[1], "rt")) == NULL) {
+				printf("\n That file does not exist !");
+				exit(1);
+			}
+		}
+
+		switch (mode) {
+			case 0:
+				input_adjlist(G, &V, &E);
+				printf("\n\nDFS_directed\n");
+				DFS_directed(G, V);
+				break;
+			case 1:
+				input_adjmatrix(G_matrix, &V, &E);
+				printf("\n\nWarshall\n");
+				warshall(G_matrix, V);
+				break;
+			case 2:
+				input_adjmatrix_floyd(G_matrix_floyd, &V, &E);
+				printf("\n\nFloyd\n");
+				floyd(G_matrix_floyd, V);
+				break;
+			case 3:
+				input_adjlist(G, &V, &E);
+				for (int i = 0; i < V; i++) {
+					net[i].next = G[i];
+				}
+
+
+				printf("\n\nTopological sorting\n");
+				topsort(net, V);
+
+				printf("\n\nReverse Topological sorting\n");
+				revtopsort(net, V);
+				break;
+
+			case 4:
+				input_adjlist(G, &V, &E);
+				printf("\n\nStrong connection test\n");
+				strong(G, V);
+				break;
+
+			default: break;
+		}
+
 		fclose(fp);
 	}
+
+
 }
