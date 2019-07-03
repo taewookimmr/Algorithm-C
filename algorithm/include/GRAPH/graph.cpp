@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
+#include <memory>
 #include "Graph.hpp"
 #include "../QUEUE/Queue.hpp" // queue가 필요해서
 #include "../DQS/DoubleQueueStack.hpp" // stack이 필요해서.
@@ -1182,7 +1183,6 @@ namespace DirGraph {
 	}
 
 
-
 	void input_adjmatrix(int G_mat[][MAX_VERTEX], int* V, int* E) {
 		char vertex[3];
 		int i, j, k;
@@ -1232,6 +1232,7 @@ namespace DirGraph {
 		}
 	}
 	
+
 	void input_adjlist(node* G[], int* V, int* E) {
 		char vertex[3];
 		int i, j;
@@ -1454,8 +1455,7 @@ namespace DirGraph {
 		}
 		printf("\n\nend of Reverse topological sorting\n");
 	}
-
-
+	
 	int strong_recur(node* G[], int i) {
 		int m, min;
 		int k;
@@ -1487,8 +1487,9 @@ namespace DirGraph {
 		}
 		return min;
 	}
+	
 	void strong(node* G[], int V) {
-		int i, k;
+		int i;
 		for (i = 0; i < V; i++)
 			check[i] = 0;
 		for (i = 0; i < V; i++) {
@@ -1569,4 +1570,259 @@ namespace DirGraph {
 	}
 
 
+}
+
+namespace Network {
+
+
+	FILE* fp;
+	int  G_matrix[MAX_VERTEX][MAX_VERTEX];
+	node* G[MAX_VERTEX];
+	head  net[MAX_VERTEX];
+
+	int earliest[MAX_VERTEX];
+	int latest  [MAX_VERTEX];
+
+	char int2name(int i) {
+		return Graph::int2name(i);
+	}
+
+	int  name2int(char c) {
+		return Graph::name2int(c);
+	}
+
+	void input_adjlist(node* G[], int* state, int* work) {
+		char vertex[3];
+		int i, j;
+		int time;
+		node* t;
+		printf("\nInput number of State & Work\n");
+		fscanf(fp, "%d %d", state, work);
+		for (i = 0; i < *state; i++) G[i] = NULL; 
+		for (j = 0; j < *work; j++) {
+
+			printf("\nInput two State consist of Work and Time -> ");
+			fscanf(fp, "%s %d", vertex, &time);
+
+
+			i = name2int(vertex[0]);
+			t = (node*)malloc(sizeof(node));
+			t->vertex = name2int(vertex[1]);
+			t->next = G[i];
+			t->weight = time;
+			t->act = (char*)malloc(sizeof(char) * 3);
+			memcpy(t->act, vertex, 3);
+			G[i] = t;
+		}
+	}
+
+	void input_adjmatrix(int G[][MAX_VERTEX], int* state, int* work) {
+		char vertex[3];
+		int i, j, k, w;
+
+		printf("\nInput number of Vertex & Edge\n");
+		fscanf(fp, "%d %d", state, work);
+	
+		for (i = 0; i < *state; i++) {
+			for (j = 0; j < *state; j++) {
+				G[i][j] = INFINITE;
+			}
+		}
+
+		for (i = 0; i < *state; i++)
+			G[i][i] = 0;
+
+		for (k = 0; k < *work; k++) {
+			if (fp == stdin)
+				printf("\nInput two Vertex consist of Edge & its Weight --> ");
+			fscanf(fp, "%s %d", vertex, &w);
+			i = name2int(vertex[0]);
+			j = name2int(vertex[1]);
+			G[i][j] = w;
+		}
+
+	}
+	
+	void set_count_indegree(head net[], int V) {
+		int i, j;
+		int count;
+		node* t;
+		for (i = 0; i < V; i++) {
+			count = 0;
+			for (j = 0; j < V; j++) {
+				for (t = net[j].next; t; t = t->next) {
+					if (t->vertex == i) count++;
+				}
+			}
+			net[i].count = count;
+		}
+	}
+
+	void set_count_outdegree(head net[], int V) {
+		int i;
+		int count;
+		node* t;
+		for (i = 0; i < V; i++) {
+			count = 0;
+			for (t = net[i].next; t; t = t->next)
+				count++;
+			net[i].count = count;
+		}
+
+	}
+
+	void forword_stage(head net[], int V) {
+		int i, j, k;
+		node* ptr;
+		DQS stack(MAX_VERTEX);
+		stack.init_stack();
+		set_count_indegree(net, V);
+
+		for (i = 0; i < V; i++) earliest[i] = 0;
+		for (i = 0; i < V; i++) {
+			if (!net[i].count) {
+				stack.push(i);
+			}
+		}
+
+		for (i = 0; i < V; i++) {
+			if (stack.getSize() == 0) {
+				// 위상 정렬에서 스택이 early-empty되는 경우 : 회로를 포함하고 있는 경우
+				printf("\nNetwork has a cycle. Sort Terminated !");
+				return;
+			}
+			else {
+				j = stack.pop();
+				for (ptr = net[j].next; ptr; ptr = ptr->next) {
+					k = ptr->vertex;
+					net[k].count--;
+					if (net[k].count == 0) {
+						stack.push(k);
+					}
+					if (earliest[k] < earliest[j] + ptr->weight) {
+						earliest[k] = earliest[j] + ptr->weight;
+						// earlist(y) = 정점 y를 직접 가리키는 정점 x에 대해
+						// (earlist(x) + <x,y>)의 가중치의 최대값
+					}
+				}
+			}
+		}	
+
+	}
+
+	void backword_stage(head net[], int V) {
+
+		int i, j, k, l = 0;
+		node* ptr;
+		DQS stack(MAX_VERTEX);
+		stack.init_stack();
+		set_count_outdegree(net, V);
+		
+		for (i = 0; i < V; i++) {
+			latest[i] = earliest[V - 1];
+			// critical path의 length에 해당하는 것으로 초기화 시켜준다.
+		}
+
+		for (i = 0; i < V; i++) {
+			if (net[i].count == 0) {
+				stack.push(i);
+			}
+		}
+
+		for (i = 0; i < V; i++) {
+			if (stack.getSize() == 0) {
+				printf("\nNetwork has a cycle. Sort Terminated !");
+				return;
+			}
+			else {
+				j = stack.pop();
+				for (l = 0; l < V; l++) {
+					for (ptr = net[l].next; ptr; ptr = ptr->next) {
+						if (ptr->vertex == j) {
+							k = l;
+							net[k].count--;
+							if (net[k].count == 0) {
+								stack.push(k);
+							}
+							if (latest[k] > latest[j] - ptr->weight) {
+								latest[k] = latest[j] - ptr->weight;
+							}
+						}
+					}
+				}
+			}
+		}
+
+
+
+	}
+
+	void print_critical_activity(head net[], int V) {
+		int i;
+		int e, l;
+		node* t;
+		printf("\n\nCritical Activities");
+		printf("\nEdge	Action	Early	Late	Late-Early	Critical?"
+			"\n----	------	-----	----	----------	---------");
+
+		for (i = 0; i < V; i++) {
+			for (t = net[i].next; t; t = t->next) {
+				e = earliest[i];
+				l = latest[i] - t->weight;
+				printf("\n<%c,%c>	%-7s %-5d	%-5d	%-10d	%s",
+					int2name(i), int2name(t->vertex), t->act, e, l, l - e,
+					(l - e == 0) ? "Yes" : "No");
+			}
+		}
+	}
+
+	void Main(int argc, char* argv[]) {
+
+		int V, E;
+
+		enum mymode {Critical, FLOW};
+		mymode mode = Critical;
+	
+		argc = 2;
+		argv[0] = (char*)"algorithm.exe";
+		switch (mode) {
+
+			case 0: argv[1] = (char*) "../Debug/res/critical.txt";   break;
+			case 1: argv[1] = (char*) "../Debug/res/flow.txt"; break;
+
+			default:break;
+		}
+
+
+		if (argc < 2)
+			fp = stdin;
+		else {
+			if ((fp = fopen(argv[1], "rt")) == NULL) {
+				printf("\n That file does not exist !");
+				exit(1);
+			}
+		}
+
+		switch (mode) {
+		case 0:
+
+			input_adjlist(G, &V, &E);
+			printf("\n\nCritical Activity\n");
+			for (int i = 0; i < V; i++) {
+				net[i].next = G[i];
+			}
+			forword_stage(net, V);
+			backword_stage(net, V);
+			print_critical_activity(net, V);
+			break;
+		case 1:
+
+			break;
+
+		default: break;
+		}
+
+		fclose(fp);
+	}
+	
 }

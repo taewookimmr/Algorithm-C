@@ -147,3 +147,33 @@ namespace DirGraph {
 
 	void Main(int argc, char* argv[]);
 }
+
+
+namespace Network {
+
+	typedef struct _node {
+		struct _node* next;
+		int vertex;
+		int weight;
+		char* act;
+	} node;
+
+	typedef struct _head {
+		int count;
+		node* next;
+	} head;
+
+	void input_adjlist(node* G[], int* state, int* act);
+	void input_adjmatrix(int G[][MAX_VERTEX], int* state, int* work);
+
+	char int2name(int i);
+	int  name2int(char c);
+	void set_count_indegree(head net[], int V);
+	void set_count_outdegree(head net[], int V);
+	void forword_stage(head net[], int V);
+	void backword_stage(head net[], int V);
+	void print_critical_activity(head net[], int V);
+
+	void Main(int argc, char* argv[]);
+
+}

@@ -6,9 +6,10 @@
 #define __WGRAPH_KRUSKAL__	102
 #define __SET__				103
 #define __DGRAPH__			104
+#define __NETWORK__			105
 
 
-#define __MAIN__ __DGRAPH__
+#define __MAIN__ __NETWORK__
 
 int main(int argc, char* argv[]) {
 
@@ -45,6 +46,9 @@ int main(int argc, char* argv[]) {
 		DirGraph::Main(argc, argv);
 	#endif
 
+	#if __MAIN__ == __NETWORK__
+		Network::Main(argc, argv);
+	#endif
 
 }
 
