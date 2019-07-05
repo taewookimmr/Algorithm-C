@@ -17,6 +17,9 @@ namespace Graph {
 	int  name2int(char c);
 	char int2name(int i);
 
+	int	 name2int_flow(char c);
+	char int2name_flow(int i);
+
 
 	void DFS_recur(int(*G)[MAX_VERTEX], int V, int i);
 	void DFS_adjmatrix(int(*G)[MAX_VERTEX], int V);
@@ -164,7 +167,7 @@ namespace Network {
 	} head;
 
 	void input_adjlist(node* G[], int* state, int* act);
-	void input_adjmatrix(int G[][MAX_VERTEX], int* state, int* work);
+	void input_adjmatrix_(int G[][MAX_VERTEX], int* V, int* E);
 
 	char int2name(int i);
 	int  name2int(char c);
@@ -174,6 +177,14 @@ namespace Network {
 	void backword_stage(head net[], int V);
 	void print_critical_activity(head net[], int V);
 
+
+	void clear_matrix(int mat[][MAX_VERTEX], int V);
+	int get_augment_path(int G[][MAX_VERTEX], int V, char S, char T);
+	void set_path(void);
+	void construct_residual(int c[][MAX_VERTEX], int f[][MAX_VERTEX], int r[][MAX_VERTEX], int V);
+	void network_flow(int c[][MAX_VERTEX], int f[][MAX_VERTEX], int r[][MAX_VERTEX], int V, char S, char T);
+	
+	void print_flow();
 	void Main(int argc, char* argv[]);
 
 }

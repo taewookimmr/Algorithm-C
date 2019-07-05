@@ -7,7 +7,7 @@
 #define __SET__				103
 #define __DGRAPH__			104
 #define __NETWORK__			105
-
+#define __POINTER_TEST__	200
 
 #define __MAIN__ __NETWORK__
 
@@ -48,6 +48,13 @@ int main(int argc, char* argv[]) {
 
 	#if __MAIN__ == __NETWORK__
 		Network::Main(argc, argv);
+	#endif
+
+	#if __MAIN__ == __POINTER_TEST__
+		
+		void (*func[10])(void);
+		printf("%d\n", sizeof(func));
+
 	#endif
 
 }

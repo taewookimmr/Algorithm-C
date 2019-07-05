@@ -1574,7 +1574,6 @@ namespace DirGraph {
 
 namespace Network {
 
-
 	FILE* fp;
 	int  G_matrix[MAX_VERTEX][MAX_VERTEX];
 	node* G[MAX_VERTEX];
@@ -1583,6 +1582,13 @@ namespace Network {
 	int earliest[MAX_VERTEX];
 	int latest  [MAX_VERTEX];
 
+	int Capacity[MAX_VERTEX][MAX_VERTEX];
+	int Flow	[MAX_VERTEX][MAX_VERTEX];
+	int Residual[MAX_VERTEX][MAX_VERTEX];
+	int check	[MAX_VERTEX];
+	int parent	[MAX_VERTEX];
+	int path	[MAX_VERTEX];
+
 	char int2name(int i) {
 		return Graph::int2name(i);
 	}
@@ -1590,6 +1596,19 @@ namespace Network {
 	int  name2int(char c) {
 		return Graph::name2int(c);
 	}
+
+	char int2name_flow(int i) {
+		if (i == 0) return SOURCE;
+		if (i == 1) return SINK;
+		return i + 'A' - 2;
+	}
+
+	int	 name2int_flow(char c) {
+		if (c == SOURCE) return 0;
+		if (c == SINK) return 1;
+		return c - 'A' + 2;
+	}
+
 
 	void input_adjlist(node* G[], int* state, int* work) {
 		char vertex[3];
@@ -1616,28 +1635,28 @@ namespace Network {
 		}
 	}
 
-	void input_adjmatrix(int G[][MAX_VERTEX], int* state, int* work) {
+	void input_adjmatrix_flow(int G[][MAX_VERTEX], int* V, int* E) {
 		char vertex[3];
 		int i, j, k, w;
 
 		printf("\nInput number of Vertex & Edge\n");
-		fscanf(fp, "%d %d", state, work);
+		fscanf(fp, "%d %d", V, E);
 	
-		for (i = 0; i < *state; i++) {
-			for (j = 0; j < *state; j++) {
-				G[i][j] = INFINITE;
+		for (i = 0; i < *V; i++) {
+			for (j = 0; j < *V; j++) {
+				G[i][j] = 0;
 			}
 		}
 
-		for (i = 0; i < *state; i++)
-			G[i][i] = 0;
+		//for (i = 0; i < *V; i++)
+		//	G[i][i] = 0;
 
-		for (k = 0; k < *work; k++) {
+		for (k = 0; k < *E; k++) {
 			if (fp == stdin)
 				printf("\nInput two Vertex consist of Edge & its Weight --> ");
 			fscanf(fp, "%s %d", vertex, &w);
-			i = name2int(vertex[0]);
-			j = name2int(vertex[1]);
+			i = name2int_flow(vertex[0]);
+			j = name2int_flow(vertex[1]);
 			G[i][j] = w;
 		}
 
@@ -1776,12 +1795,132 @@ namespace Network {
 		}
 	}
 
+
+	/*
+		maximum	flow test
+	*/
+
+
+	void clear_matrix(int mat[][MAX_VERTEX], int V) {
+		int i, j;
+		for (i = 0; i < V; i++)
+			for (j = 0; j < V; j++)
+				mat[i][j] = 0;
+	}
+
+	int get_augment_path(int Residual[][MAX_VERTEX], int V, char S, char T) {
+		int i, j;
+		Queue queue(MAX_VERTEX);
+		queue.init_queue();
+		for (i = 0; i < V; i++) {
+			check[i] = 0;
+			parent[i] = -1;
+		}
+		i = name2int_flow(S);
+		if (check[i] == 0) {
+			queue.put(i);
+			check[i] = 1;
+			while (queue.getSize() != 0) {
+				i = queue.get();
+				if (i == name2int_flow(T)) {
+					break; // 출구를 찾으면 종료 
+				}
+				for (j = 0; j < V; j++) {
+					if (Residual[i][j] != 0) {
+						if (check[j] == 0) {
+							queue.put(j);
+							check[j] = 1;
+							parent[j] = i; // 나무 구조 생성 
+						}
+					}
+				}
+			}
+		}
+
+		set_path();
+		if (i == name2int_flow(SINK)) return 1;
+		else return 0;
+	}
+
+	void set_path(void) {
+		int* temp;
+		int i, count = 0;
+		temp = (int*)malloc(sizeof(int) * MAX_VERTEX);
+		i = name2int_flow(SINK);
+		printf("\n");
+		while (i >= 0) {
+			// 확대 경로의 역순을 temp[] 배열에 저장
+			temp[count] = i;
+			i = parent[i];
+			count++;
+		}
+		for (i = 0; i < count; i++)
+			path[i] = temp[count - i - 1];
+
+		path[i] = -1;
+		free(temp);
+
+
+	}
+
+	void construct_residual(int c[][MAX_VERTEX], int f[][MAX_VERTEX], int r[][MAX_VERTEX], int V) {
+		int i, j;
+		for (i = 0; i < V; i++)
+			for (j = 0; j < V; j++)
+				r[i][j] = c[i][j] - f[i][j];
+	}
+
+	void network_flow(int c[][MAX_VERTEX], int f[][MAX_VERTEX], int r[][MAX_VERTEX], int V, char S, char T) {
+		int i, min;
+		clear_matrix(f, V);
+		clear_matrix(r, V);
+		construct_residual(c, f, r, V);
+		while (get_augment_path(r, V, S, T)) {
+			min = INT_MAX;
+			for (i = 1; path[i] >= 0; i++) {
+				if (min > r[path[i - 1]][path[i]]) min = r[path[i - 1]][path[i]];
+			}
+			for (i = 1; path[i] >= 0; i++) {
+				f[path[i - 1]][path[i]] = f[path[i - 1]][path[i]] + min;
+				f[path[i]][path[i - 1]] = -f[path[i]][path[i - 1]];
+			}
+			construct_residual(c, f, r, V);
+			print_flow();
+		}
+		
+
+
+	}
+
+	void print_flow() {
+		printf("parent : ");
+		for (int i = 0; i < 6; i++) {
+			printf("%d ", parent[i]);
+		}
+		printf("\n");
+
+		printf("path : ");
+		for (int i = 0; i < 6; i++) {
+			printf("%d ", path[i]);
+		}
+		printf("\n");
+
+		printf("max flow\n");
+		for (int i = 0; i < 6; i++) {
+			for (int j = 0; j < 6; j++) {
+				printf("%4d ", Flow[i][j]);
+			}
+			printf("\n");
+		}
+	}
+
+
 	void Main(int argc, char* argv[]) {
 
 		int V, E;
 
 		enum mymode {Critical, FLOW};
-		mymode mode = Critical;
+		mymode mode = FLOW;
 	
 		argc = 2;
 		argv[0] = (char*)"algorithm.exe";
@@ -1815,8 +1954,11 @@ namespace Network {
 			backword_stage(net, V);
 			print_critical_activity(net, V);
 			break;
-		case 1:
 
+		case 1:
+			input_adjmatrix_flow(Capacity, &V, &E);
+			printf("\n\nMax flow test\n");
+			network_flow(Capacity, Flow, Residual, V, SOURCE, SINK);
 			break;
 
 		default: break;

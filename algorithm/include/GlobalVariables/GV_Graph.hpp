@@ -15,3 +15,6 @@
 #define MAX_ELEMENT 100
 #define ONLY_FIND 0
 #define UNION 1
+
+#define SOURCE 'S'
+#define SINK   'T'
